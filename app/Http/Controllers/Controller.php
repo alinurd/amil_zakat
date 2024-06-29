@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Content;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -16,6 +17,14 @@ use Illuminate\Support\Facades\Http;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function getContenByKategori($param)
+{
+    // Menggunakan Eloquent untuk mengambil konten berdasarkan kategori
+    $contents = Content::where('code_kategori', $param)->get();
+
+    return $contents;
+}
 
     public function generateCode($param)
     {
