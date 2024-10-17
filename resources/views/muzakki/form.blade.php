@@ -37,8 +37,8 @@
                   </div>
                </div>
                <div class="row">
-                  <div class="form-group col-md-12">
-                  <table class="table" id="muzakkiTable">
+                  <div class="form-group col-md-12" style="overflow-x: auto;">
+                  <table class="table mb-3" id="muzakkiTable">
                         <thead>
                            <th>No</th>
                            <th>Nama</th>
@@ -48,6 +48,7 @@
                            <th>Satuan</th>
                            <th>Satuan</th>
                            <th>Subtotal</th>
+                           <!-- <th>Aksi</th> -->
                         </thead>
                         <tbody>
                            <tr>
@@ -94,7 +95,10 @@
                               <td>
                               <span id="subtotal0"> </span><input type="hidden" name="subtotal[]" id="subInt0">
                               <span id="subtotaltext0"> </span>
-                              </td>
+                           
+                               <!-- <td>
+                                <span class="btn btn-danger btn-sm" disabled>Hapus</span>
+                               </td> -->
                            </tr>
                         </tbody>
                         <tr>
@@ -136,6 +140,25 @@
    </div>
 </x-app-layout>
 <script>
+
+ 
+function deleteRow(rowCount) {
+ 
+    var row = document.querySelector('#muzakkiTable tbody tr:nth-child(' + (rowCount + 1) + ')');
+    if (row) {
+        row.remove();
+    }
+ 
+    calculateTotal();
+}
+ 
+document.addEventListener('DOMContentLoaded', function() {
+     document.querySelector('#deleteRow0').addEventListener('click', function() {
+        deleteRow(0); 
+    });
+});
+
+
     document.getElementById('getTotal').addEventListener('click', function() {
         calculateTotal()
     })
@@ -176,9 +199,17 @@
             } else if (i == 6) {
                 newCell.innerHTML = '<input type="text" name="jumlah[]" id="jumlah' + rowCount + '" class="form-control">';
             } else if (i == 7) {
-                newCell.innerHTML = '<span id="subtotal' + rowCount + '"></span> <span id="subtotaltext' + rowCount + '"> </span><br><input type="hidden" name="subtotal[]" id="subInt' + rowCount + '" class="form-control">';            } else {
+                newCell.innerHTML = '<span id="subtotal' + rowCount + '"></span> <span id="subtotaltext' + rowCount + '"> </span><br><input type="hidden" name="subtotal[]" id="subInt' + rowCount + '" class="form-control">';        
+            
+             }
+            //  else if (i == 8) {
+            //     newCell.innerHTML = '<span class="btn btn-danger btn-sm" id="deleteRow' + rowCount + '" onclick="deleteRow(' + rowCount + ')">Hapus</span>';            
+            // } 
+            else if (i == 1) {
                 newCell.innerHTML = '{!! Form::select('user[]', $agt, "", ['class' => 'form-control']) !!}';
             }
+         
+
            
         }
         newRow.querySelector('input[name^="jumlah[]"]').addEventListener('input', function() {
