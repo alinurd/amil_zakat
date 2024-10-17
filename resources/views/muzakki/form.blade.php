@@ -46,7 +46,7 @@
                            <th>Jumlah jiwa</th>
                            <th>Type Pembayaran</th>
                            <th>Satuan</th>
-                           <th>Jumlah</th>
+                           <th>Satuan</th>
                            <th>Subtotal</th>
                         </thead>
                         <tbody>
