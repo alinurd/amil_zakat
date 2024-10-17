@@ -47,7 +47,7 @@
                            <th>Type Pembayaran</th>
                            <th>Satuan</th>
                            <th>Jumlah</th>
-                           <!-- <th>Subtotal</th> -->
+                           <th>Subtotal</th>
                         </thead>
                         <tbody>
                            <tr>
@@ -91,10 +91,10 @@
                               <td>
                                  <input type="text" name="jumlah[]" id="jumlah0" class="form-control">
                               </td>
-                              <!-- <td>
+                              <td>
                               <span id="subtotal0"> </span>
                               <span id="subtotaltext0"> </span>
-                              </td> -->
+                              </td>
                            </tr>
                         </tbody>
                         <tr>
@@ -151,16 +151,17 @@
     </div>
 `;
 
-
-               
             } else if (i == 5) {
                 newCell.innerHTML = '<select name="satuan[' + rowCount + ']" id="satuan' + rowCount + '" class="form-control"><option value="Kg">Kg</option><option value="Liter">Liter</option><option value="Rupiah">Rupiah</option></select>';
 
             } else if (i == 6) {
                 newCell.innerHTML = '<input type="text" name="jumlah[]" id="jumlah' + rowCount + '" class="form-control">';
+            } else if (i == 7) {
+                newCell.innerHTML = '<span id="subtotal' + rowCount + '"></span> <span id="subtotaltext' + rowCount + '"> </span>';
             } else {
                 newCell.innerHTML = '{!! Form::select('user[]', $agt, "", ['class' => 'form-control']) !!}';
             }
+            console.log(i)
         }
 
           // Tambahkan event listener untuk input jumlah pada baris yang baru ditambahkan
