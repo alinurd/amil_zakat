@@ -1,16 +1,13 @@
 <x-app-layout layout="landing" :isHeader1=true>
-    <x-landing-pages.widgets.sub-header subTitle="Features" subBreadcrume="Features" />
+    <x-landing-pages.widgets.sub-header subTitle="Kategori" subBreadcrume="Kategori" />
     <div class="section-card-padding bg-white">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <p class="mb-3 text-uppercase text-primary">
-                        Features
-                    </p>
-                    <h2 class=" mb-4">Features Provided <span class="text-primary">For You </span></h2>
+                    <h2 class=" mb-4">CARI APA  <span class="text-primary">? </span></h2>
                 </div>
             </div>
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+            <div class="row row-cols-4 row-cols-sm-4 row-cols-md-4">
                 <x-landing-pages.widgets.feature-section />
             </div>
         </div>

@@ -94,7 +94,8 @@ class UserController extends Controller
 
         $profileImage = getSingleMedia($data, 'profile_image');
 
-        return view('users.form', compact('data','id', 'roles', 'profileImage'));
+        $m = 0;
+        return view('users.form', compact('data','id', 'roles', 'm', 'profileImage'));
     }
     public function show($id)
     {
@@ -103,10 +104,11 @@ class UserController extends Controller
         $data['user_type'] = $data->roles->pluck('id')[0] ?? null;
 
         $roles = Role::where('status',1)->get()->pluck('title', 'id');
+        $m = 1;
 
         $profileImage = getSingleMedia($data, 'profile_image');
 
-        return view('users.form', compact('data','id', 'roles', 'profileImage'));
+        return view('users.form', compact('data','id', 'roles', 'm', 'profileImage'));
     }
 
     /**

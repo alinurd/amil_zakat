@@ -105,25 +105,19 @@
                 <select name="#" id="#" class="form-control">
                     <option value="">Pilih Tahun</option>
                     <option value="2024">2024</option>
-                    <option value="2025">2025</option>
                 </select>
             </div>
             <div class="form-group col-md-3">
-                <button type="button" name="next" class="btn next1 btn-primary next action-button float-left" value="Next" style="background: #118146;">Filter</button>
+                <a href="{{route('uisheet')}}" class="btn  btn-primary  float-left" style="background: #118146;"> Filter</a>
+                <!-- <button type="submit" ></button> -->
             </div>
         </div>
 
         <div class="bd-example">
             <nav>
                 <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
-<<<<<<< HEAD
-                    <button class="nav-link active" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Total Pemasukan</button>
-                    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Total Penyaluran</button>
-=======
-                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Total Saldo</button>
-                    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Penerimaan Zakat</button>
-                    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Pengeluaran Zakat</button>
->>>>>>> 84a27c3fb3af4ad893aca24589ec6b0c5bee5f6f
+                <button class="nav-link active" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Penerimaan Zakat </button>
+                    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Penyaluran Zakat</button>
                 </div>
             </nav>
             <div class="tab-content" id="nav-tabContent">
@@ -143,146 +137,6 @@
                                             <div>
                                                 <div class="badge m-3">
                                                     <span class="h4 text-white d-md-inline d-none">Uang:</span>
-<<<<<<< HEAD
-=======
-                                                    <span class="badge bg-primary"><b class="h4 text-white">Rp{{ number_format($sisaPemasukanFitrah, 0) }}.-</b></span>
-                                                </div>
-                                                <h6 class="text-white">Beras: {{ number_format($totalSaldoBerasLFitrah, 1) }} Liter &amp; {{ number_format($totalSaldoBerasKgFitrah, 0) }} Kg</h6>
-                                            </div>
-                                            <div></div> 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> 
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card border-bottom border-4 border-0 border-info">
-                                <div class="card mb-1" style="background: #118146;">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <div class="h3 p-3 rounded bg-soft-light text-white">
-                                                    Fidyah
-                                                </div> 
-                                            </div>
-                                            <div>
-                                                <div class="badge m-3">
-                                                    <span class="h4 text-white">Uang:</span>  
-                                                </div> 
-                                                <span class="badge bg-primary"><b class="h4 text-white">Rp{{ number_format($sisaPemasukanFidyah, 0) }}.-</b></span>
-                                                <h6 class="text-white">Beras: {{ number_format($totalSaldoBerasLFidyah, 1) }} Liter &amp; {{ number_format($totalSaldoBerasKgFidyah, 0) }} Kg</h6>
-                                            </div>
-                                            <div></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top: -2%;">
-                        <div class="col-md-6">
-                                <div class="card border-bottom border-4 border-0 border-info">
-                                    <div class="card mb-1" style="background: #118146;">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <div class="h3 p-3 rounded bg-soft-light text-white">
-                                                        Maal
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="badge m-3">
-                                                        <span class="h4 text-white">Uang:</span>
-                                                    </div>
-                                                    <span class="badge bg-primary"><b class="h4 text-white">Rp{{ number_format($sisaPemasukanMaal, 0) }}.-</b></span>
-                                                </div>
-                                                <div></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
-                        <div class="col-md-6">
-                                <div class="card border-bottom border-4 border-0 border-info">
-                                    <div class="card mb-1" style="background: #118146;">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <div class="h3 p-3 rounded bg-soft-light text-white">
-                                                        Infaq
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div class="badge m-3">
-                                                        <span class="h4 text-white">Uang:</span>
-                                                    </div>
-                                                    <span class="badge bg-primary"><b class="h4 text-white">Rp{{ number_format($sisaPemasukanInfaq, 0) }}.-</b></span>
-                                                </div>
-                                                <div></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
-                    </div>
-                    <!-- <div class="row" style="margin-top: -2%;">
-                        <div class="col-md-6">
-                                <div class="card border-bottom border-4 border-0 border-info">
-                                    <div class="card mb-1" style="background: #118146;">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <div class="h3 p-3 rounded bg-soft-light text-white">
-                                                        Total Muzakki
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <span class="badge bg-primary"><b class="h4 text-white">{{ $Transactionsmuzakki }}</b></span>
-                                                </div>
-                                                <div></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
-                        <div class="col-md-6">
-                                <div class="card border-bottom border-4 border-0 border-info">
-                                    <div class="card mb-1" style="background: #118146;">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <div class="h3 p-3 rounded bg-soft-light text-white">
-                                                        Total Mustahiq
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <span class="badge bg-primary"><b class="h4 text-white">{{ $Transactionsmustahik }}</b></span>
-                                                </div>
-                                                <div></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
-                    </div> -->
-                </div>
-
-                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card border-bottom border-4 border-0 border-info">
-                                <div class="card mb-1" style="background: #118146;">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <div class="h3 p-3 rounded bg-soft-light text-white">
-                                                    Fitrah Muzakki
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="badge m-3">
-                                                    <span class="h4 text-white d-md-inline d-none">Uang:</span>
->>>>>>> 84a27c3fb3af4ad893aca24589ec6b0c5bee5f6f
                                                     <span class="badge bg-primary"><b class="h4 text-white">Rp{{ number_format($totalPemasukanFitrah, 0) }}.-</b></span>
                                                 </div>
                                                 <h6 class="text-white">Beras: {{ number_format($totalBerasMuzakkiLFitrah, 1) }} Liter &amp; {{ number_format($totalBerasMuzakkiKgFitrah, 0) }} Kg</h6>

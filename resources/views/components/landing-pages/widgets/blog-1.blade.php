@@ -6,7 +6,7 @@
         <a href="blog-detail.html" class="my-3 h5">{{$blogTitle}}</a>
         <div class="d-flex align-items-center my-3">
             <span>{{$blogAuther}}</span>
-            <span class="ms-3 text-primary">Admin</span>
+            <span class="ms-3 text-primary">uugugugoujpo</span>
         </div>
             <p class="">{{$blogDescription}}</p>
         <a href="blog-detail.html" class="btn btn-primary">Read More</a>
