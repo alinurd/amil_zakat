@@ -24,14 +24,49 @@ class MuzakkiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(MuzakkiDataTable $dataTable)
-    {
-        $pageTitle = trans('global-message.list_form_title', ['form' => trans('Muzakki')]);
-        $auth_user = AuthHelper::authSession();
-        $assets = ['data-table'];
-        $headerAction = '<a href="' . route('muzakki.create') . '" class="btn btn-sm btn-primary" role="button">Add Muzakki</a>';
-        return $dataTable->render('global.datatable', compact('pageTitle', 'auth_user', 'assets', 'headerAction'));
+    public function index(MuzakkiDataTable $dataTable, Request $request)
+{
+    $hideFilter='';
+    if($request->input()){
+        $hideFilter = '<a href="' . route('muzakki.index') . '" class="btn btn-warning btn-sm" style="margin-top: 5px;">
+            <svg width="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.76045 14.3667C9.18545 13.7927 8.83545 13.0127 8.83545 12.1377C8.83545 10.3847 10.2474 8.97168 11.9994 8.97168C12.8664 8.97168 13.6644 9.32268 14.2294 9.89668" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M15.1049 12.6987C14.8729 13.9887 13.8569 15.0067 12.5679 15.2407" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M6.65451 17.4722C5.06751 16.2262 3.72351 14.4062 2.74951 12.1372C3.73351 9.85823 5.08651 8.02823 6.68351 6.77223C8.27051 5.51623 10.1015 4.83423 11.9995 4.83423C13.9085 4.83423 15.7385 5.52623 17.3355 6.79123" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M19.4473 8.99072C20.1353 9.90472 20.7403 10.9597 21.2493 12.1367C19.2823 16.6937 15.8063 19.4387 11.9993 19.4387C11.1363 19.4387 10.2853 19.2987 9.46729 19.0257" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M19.8868 4.24951L4.11279 20.0235" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+                Sembunyikan Filter
+            </a>
+        ';
     }
+    
+
+    $filter = '<form action="' . route('muzakki.index') . '" method="GET" class="d-flex align-items-center" style="padding-right: 10px;">
+            <div class="form-group mb-0 mr-2">
+                <select name="year" id="year" class="form-control">
+                    <option value="" disabled selected>Pilih Tahun</option>
+                    <option value="2025" ' . (request('year') == '2025' ? 'selected' : '') . '>2025</option>
+                    <option value="2026" ' . (request('year') == '2026' ? 'selected' : '') . '>2026</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success">
+                <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M4.56517 3C3.70108 3 3 3.71286 3 4.5904V5.52644C3 6.17647 3.24719 6.80158 3.68936 7.27177L8.5351 12.4243L8.53723 12.4211C9.47271 13.3788 9.99905 14.6734 9.99905 16.0233V20.5952C9.99905 20.9007 10.3187 21.0957 10.584 20.9516L13.3436 19.4479C13.7602 19.2204 14.0201 18.7784 14.0201 18.2984V16.0114C14.0201 14.6691 14.539 13.3799 15.466 12.4243L20.3117 7.27177C20.7528 6.80158 21 6.17647 21 5.52644V4.5904C21 3.71286 20.3 3 19.4359 3H4.56517Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                Filter
+            </button>
+        </form>
+    ';
+
+    $pageTitle = trans('global-message.list_form_title', ['form' => trans('Muzakki')]);
+    $auth_user = AuthHelper::authSession();
+    $assets = ['data-table'];
+    $headerAction = '<a href="' . route('muzakki.create') . '" class="btn btn-primary" role="button">Add Muzakki</a>';
+
+    return $dataTable->render('global.datatable', compact('pageTitle', 'auth_user', 'assets', 'headerAction', 'filter', 'hideFilter'));
+}
+
 
     /**
      * Show the form for creating a new resource.

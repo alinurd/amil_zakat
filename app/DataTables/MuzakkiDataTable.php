@@ -6,6 +6,7 @@ use App\Models\Muzakkiview;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;  
 use Yajra\DataTables\Services\DataTable;
+use Illuminate\Http\Request;
 
 class MuzakkiDataTable extends DataTable
 {
@@ -34,9 +35,9 @@ class MuzakkiDataTable extends DataTable
      * @param \App\Models\User $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query()
-    {
-        $model = Muzakkiview::query();
+    public function query(Request $request)
+    {        $year = $request->input('year', date('Y'));
+         $model = Muzakkiview::query()->whereYear('created_at', $year);
 
         return $this->applyScopes($model);
     }

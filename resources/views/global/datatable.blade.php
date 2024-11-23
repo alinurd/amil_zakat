@@ -10,9 +10,17 @@
                <div class="header-title">
                   <h4 class="card-title">{{ $pageTitle ?? 'List'}}</h4>
                </div>
-                <div class="card-action">
-                    {!! $headerAction ?? '' !!}
-                </div>
+               <div class="card-action">
+    <div class="d-flex justify-content-between align-items-center">
+       <!-- {!!$filter??''!!} -->
+ 
+        <div>
+            {!! $headerAction ?? '' !!}
+        </div>
+    </div>
+   <center> {!!$hideFilter?? ""!!}</center>
+</div>
+
             </div>
             <div class="card-body px-0">
                <div class="table-responsive">
