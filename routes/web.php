@@ -48,7 +48,6 @@ Route::get('about',[HomeController::class, 'landing_about'])->name('landing-page
 Route::get('contact',[HomeController::class, 'landing_contact'])->name('landing-pages.contact');
 Route::get('ecommerce',[HomeController::class, 'landing_ecommerce'])->name('landing-pages.ecommerce');
 Route::get('faq',[HomeController::class, 'landing_faq'])->name('landing-pages.faq');
-Route::get('content/{code}', [HomeController::class, 'landing_content'])->name('landing-pages.content');
 Route::get('feature',[HomeController::class, 'landing_feature'])->name('landing-pages.feature');
 Route::get('pricing',[HomeController::class, 'landing_pricing'])->name('landing-pages.pricing');
 Route::get('saas',[HomeController::class, 'landing_saas'])->name('landing-pages.saas');
@@ -60,9 +59,8 @@ Route::get('startup',[HomeController::class, 'landing_startup'])->name('landing-
 
 //UI Pages Routs
 // Route::get('/', [HomeController::class, 'uisheet'])->name('uisheet');
-// Route::get('/',[HomeController::class, 'landing_index'])->name('uisheet');
-Route::get('/',[HomeController::class, 'landing_feature'])->name('landing-pages.feature');
-
+Route::get('/',[HomeController::class, 'landing_index'])->name('uisheet');
+ 
 Route::get('showinvoice/{code}', [MustahikuserController::class, 'show'])->name('showinvoice');
  Route::get('history/showdataupdate/{code}', [MustahikuserController::class, 'showdataupdate'])->name('showdataupdate');
 
