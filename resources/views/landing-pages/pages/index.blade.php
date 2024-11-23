@@ -55,6 +55,7 @@
         }
 
         }
+
     </style>
 
      @if (session('success'))
@@ -100,24 +101,27 @@
         <br>
         <br>
 
+        <form action="{{ route('landing-pages.index') }}" method="GET">
         <div class="row">
             <div class="form-group col-md-4">
-                <select name="#" id="#" class="form-control">
-                    <option value="">Pilih Tahun</option>
-                    <option value="2024">2024</option>
-                    <option value="2025">2025</option>
-                </select>
+                <select name="year" id="year" class="form-control">
+                    <option value="2024" {{ request('year') == '2024' ? 'selected' : '' }}>Pilih Tahun</option> 
+                    <option value="2024" {{ request('year') == '2024' ? 'selected' : '' }}>2024</option>
+                    <option value="2025" {{ request('year') == '2025' ? 'selected' : '' }}>2025</option>
+                </select> 
             </div>
             <div class="form-group col-md-3">
-                <button type="button" name="next" class="btn next1 btn-primary next action-button float-left" value="Next" style="background: #118146;">Filter</button>
+                <button type="submit" class="btn btn-primary float-left" style="background: #118146;">Filter</button>
+                <!-- <button type="submit" ></button> -->
             </div>
-        </div>
+        </div> 
+        </form>
 
         <div class="bd-example">
             <nav>
                 <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
-                    <button class="nav-link active" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Total Pemasukan</button>
-                    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Total Penyaluran</button>
+                <button class="nav-link active" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Penerimaan Zakat </button>
+                    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Penyaluran Zakat</button>
                 </div>
             </nav>
             <div class="tab-content" id="nav-tabContent">
@@ -137,8 +141,8 @@
                                             <div>
                                                 <div class="badge m-3">
                                                     <span class="h4 text-white d-md-inline d-none">Uang:</span>
-                                                    <span class="badge bg-primary"><b class="h4 text-white">Rp{{ number_format($totalPemasukanFitrah, 0) }}.-</b></span>
                                                 </div>
+                                                    <span class="badge bg-primary"><b class="h4 text-white">Rp{{ number_format($totalPemasukanFitrah, 0) }}.-</b></span>
                                                 <h6 class="text-white">Beras: {{ number_format($totalBerasMuzakkiLFitrah, 1) }} Liter &amp; {{ number_format($totalBerasMuzakkiKgFitrah, 0) }} Kg</h6>
                                             </div>
                                             <div></div> 
