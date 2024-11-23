@@ -23,8 +23,9 @@
                                  <th class="text-center" scope="col">Kategori</th>
                                  <th class="text-center" scope="col">Jumlah Jiwa</th>
                                  <th class="text-center" scope="col">Type</th>
-                                 <th class="text-center" scope="col">Jumlah</th>
                                  <th class="text-center" scope="col">Satuan</th>
+                                 <th class="text-center" scope="col">Jumlah</th>
+                                 <th class="text-center" scope="col">Subtotal</th>
                               </tr>
                            </thead>
                            <tbody>
@@ -38,8 +39,9 @@
                                  <td class="text-center">{{$item['kategori']['nama_kategori']}}</td>
                                  <td class="text-center">{{$item['jumlah_jiwa']}}</td>
                                  <td class="text-center">{{$item['type']}}</td>
-                                 <td class="text-center">{{$item['jumlah_bayar']}}</td>
                                  <td class="text-center">{{$item['satuan']}}</td>
+                                 <td class="text-center">{{$item['jumlah_bayar']}}</td>
+                                 <td class="text-center">{{$item['jumlah_bayar'] * $item['jumlah_jiwa']}} {{$item['satuan']}}</td>
                               </tr>
                               @endforeach
                               <tr>
@@ -86,11 +88,11 @@
 
       @foreach($data['detail'] as $item)
     @if($item['satuan'] === 'Liter')
-        totalBeras += parseFloat("{{ str_replace(',', '.', $item['jumlah_bayar']) }}");
+        totalBeras += parseFloat("{{ str_replace(',', '.', $item['jumlah_bayar'] * $item['jumlah_jiwa']) }}");
     @elseif($item['satuan'] === 'Rupiah')
-        totalUang += parseFloat("{{ str_replace(',', '.', $item['jumlah_bayar']) }}");
+        totalUang += parseFloat("{{ str_replace(',', '.', $item['jumlah_bayar'] * $item['jumlah_jiwa']) }}");
     @elseif($item['satuan'] === 'Kg')
-        totalKg += parseFloat("{{ str_replace(',', '.', $item['jumlah_bayar']) }}");
+        totalKg += parseFloat("{{ str_replace(',', '.', $item['jumlah_bayar'] * $item['jumlah_jiwa']) }}");
     @endif
 @endforeach
 
