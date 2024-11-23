@@ -102,7 +102,6 @@
                            </tr>
                         </tbody>
                         <tr>
-
                            <td colspan="6" rowspan="3" class="text-end"><strong>Total:</strong></td>
                            <td class="text-star" colspan="2"><span id="ttlLiter">0</span> <i>Liter</i></td>
                         </tr>
