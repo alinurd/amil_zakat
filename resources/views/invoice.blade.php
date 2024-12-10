@@ -77,10 +77,11 @@
                         <th>No</th>
                         <th>Nama</th>
                         <th>Kategori</th>
-                        <th>Jumlah Jiwa</th>
-                        <th>Type</th>
-                        <th>Jumlah</th>
-                        <th>Satuan</th>
+                                 <th>Jumlah Jiwa</th>
+                                 <th>Type</th>
+                                 <th>Satuan</th>
+                                 <th>Jumlah</th>
+                                 <th>Subtotal</th>
                     </tr>
                 </thead>
                 <?php
@@ -91,28 +92,37 @@ $totalRupiah = 0;
 ?>
 
 @foreach($detail as $item)
-    <tr>
-        <td>{{ ++$no }}</td>
-        <td style="text-align: left;">{{ $item['user']['nama_lengkap'] }}</td>
-        <td>{{ $item['kategori']['nama_kategori'] }}</td>
-        <td>{{ $item['jumlah_jiwa'] }}</td>
-        <td>{{ $item['type'] }}</td>
-        <td style="text-align: right;">
-            
-        @if($item['satuan'] === 'Rupiah')
-        {{ number_format($item['jumlah_bayar'], 2) }}
-        @elseif($item['type'] === 'Beras')
-        {{ $item['jumlah_bayar'] }}
-        @endif</td>
-        
-        <td>{{ $item['satuan'] }}</td>
-    </tr>
+<tr>
+                                 <td class="text-center">{{++$no}}</td>
+                              
+                                 <td style="text-align: left;">{{ $item['user']['nama_lengkap'] }}</td>
+                               
+                                 <td class="text-center">{{$item['kategori']['nama_kategori']}}</td>
+                                 <td class="text-center">{{$item['jumlah_jiwa']}}</td>
+                                 <td class="text-center">{{$item['type']}}</td>
+                                 <td class="text-center">{{$item['satuan']}}</td>
+                                 <td class="text-center">
+                                    @if($item['satuan']=='Rupiah')
+                                    {{ number_format($item['jumlah_bayar'], 2) }} 
+                                    @else  
+                                    {{$item['jumlah_bayar']}}
+                                    @endif
+                                </td>
+                                 <td class="text-center">
+                                    @if($item['satuan']=='Rupiah')
+                                        {{ number_format($item['jumlah_bayar']*$item['jumlah_jiwa'], 2) }} 
+                                        @else  
+                                        {{$item['jumlah_bayar'] * $item['jumlah_jiwa']}} {{$item['satuan']}}
+                                    @endif
+                                </td>
+                              </tr>
+  
     @if($item['satuan'] === 'Liter')
-        <?php $totalLiter += (float) str_replace(',', '.', $item['jumlah_bayar']); ?>
+        <?php $totalLiter += (float) str_replace(',', '.', $item['jumlah_bayar'] * $item['jumlah_jiwa']); ?>
     @elseif($item['satuan'] === 'Kg')
-        <?php $totalKg += (float) str_replace(',', '.', $item['jumlah_bayar']); ?>
+        <?php $totalKg += (float) str_replace(',', '.', $item['jumlah_bayar'] * $item['jumlah_jiwa']); ?>
     @elseif($item['satuan'] === 'Rupiah')
-        <?php $totalRupiah += (float) str_replace(',', '.', $item['jumlah_bayar']); ?>
+        <?php $totalRupiah += (float) str_replace(',', '.', $item['jumlah_bayar'] * $item['jumlah_jiwa']); ?>
     @endif
 @endforeach
 

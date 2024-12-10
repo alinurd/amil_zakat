@@ -73,7 +73,8 @@ class MuzakkiSheetRp implements FromCollection, WithHeadings, ShouldAutoSize
                                     'Satuan' => $satuan,
                                     'Jumlah' => $item->jumlah_bayar,
                                     'Jml Jiwa' => $item->jumlah_jiwa,
-                                    'Subtottal' => $item->jumlah_bayar * $item->jumlah_jiwa,
+'Subtottal' => (is_numeric($item->jumlah_bayar) ? $item->jumlah_bayar : 0) 
+             * (is_numeric($item->jumlah_jiwa) ? $item->jumlah_jiwa : 0),
                                 ];
                                 break;
                           
@@ -183,7 +184,8 @@ class MuzakkiSheetLt implements FromCollection, WithHeadings, ShouldAutoSize
                                     'Satuan' => $satuan,
                                     'Jumlah' => $item->jumlah_bayar,
                                     'Jml Jiwa' => $item->jumlah_jiwa,
-                                    'Subtottal' => $item->jumlah_bayar * $item->jumlah_jiwa,
+'Subtottal' => (is_numeric($item->jumlah_bayar) ? $item->jumlah_bayar : 0) 
+             * (is_numeric($item->jumlah_jiwa) ? $item->jumlah_jiwa : 0),
                                 ];
                                 break;
                         }
@@ -294,7 +296,8 @@ class MuzakkiSheetKg implements FromCollection, WithHeadings, ShouldAutoSize
                                     'Satuan' => $satuan,
                                     'Jumlah' => $item->jumlah_bayar,
                                     'Jml Jiwa' => $item->jumlah_jiwa,
-                                    'Subtottal' => $item->jumlah_bayar * $item->jumlah_jiwa,
+'Subtottal' => (is_numeric($item->jumlah_bayar) ? $item->jumlah_bayar : 0) 
+             * (is_numeric($item->jumlah_jiwa) ? $item->jumlah_jiwa : 0),
                                 ];
                                 break;
                         }
