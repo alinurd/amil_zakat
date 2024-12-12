@@ -183,9 +183,12 @@ class MuzakkiController extends Controller
         ]);
 
         // Update MuzakkiHeader
-        MuzakkiHeader::where('code', $request->code)->update([
-            'user_id' => $validatedData['dibayarkan'],
-        ]);
+        MuzakkiHeader::withoutTimestamps(function () use ($request, $validatedData) {
+            MuzakkiHeader::where('code', $request->code)->update([
+                'user_id' => $validatedData['dibayarkan'],
+            ]);
+        });
+        
 
         // Loop melalui data yang diberikan
         foreach ($validatedData['user'] as $key => $user) {
