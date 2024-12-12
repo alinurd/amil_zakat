@@ -95,14 +95,13 @@
                               <td>
                               <span id="subtotal0"> </span><input type="hidden" name="subtotal[]" id="subInt0">
                               <span id="subtotaltext0"> </span>
-                           
+                            </td>
                                <!-- <td>
                                 <span class="btn btn-danger btn-sm" disabled>Hapus</span>
                                </td> -->
                            </tr>
                         </tbody>
                         <tr>
-
                            <td colspan="6" rowspan="3" class="text-end"><strong>Total:</strong></td>
                            <td class="text-star" colspan="2"><span id="ttlLiter">0</span> <i>Liter</i></td>
                         </tr>
@@ -264,8 +263,7 @@ jumlahElem.addEventListener('input', function() {
 
 // Memilih elemen dengan id satuan0
 var satuanElem = document.querySelector('#satuan0');
-
-// Menambahkan event listener untuk elemen satuan0
+ 
 satuanElem.addEventListener('change', function() {
     calculateSubtotalForRow(0);
   
@@ -284,21 +282,15 @@ function calculateSubtotalForRow(rowCount) {
 
     var subtotal = jumlahJiwa * jumlah;
 
-    document.querySelector('#subtotal' + rowCount).textContent = subtotal.toLocaleString('id-ID');
-    document.querySelector('#subtotaltext' + rowCount).textContent = satuanSelect.value;
-
-    // Penundaan untuk memastikan input subInt tersedia di DOM
-    
-    // Update total jika diperlukan
+    // document.querySelector('#subtotal' + rowCount).textContent = subtotal.toLocaleString('id-ID');
+    // document.querySelector('#subtotaltext' + rowCount).textContent = satuanSelect.value;
+ 
     caclculateSubtotal();
     
 
 }
 
-
-
-
-
+ 
 
     function caclculateSubtotal() {
       
@@ -331,8 +323,8 @@ function calculateSubtotalForRow(rowCount) {
         var subtotal = jumlahJiwa * jumlah;
         total += subtotal;
 
-        row.querySelector('#subtotal' + index).textContent = subtotal.toLocaleString('id-ID');
-        row.querySelector('#subtotaltext' + index).textContent = satuanSelect.value;
+        // row.querySelector('#subtotal' + index).textContent = subtotal.toLocaleString('id-ID');
+        // row.querySelector('#subtotaltext' + index).textContent = satuanSelect.value;
         ;
     });
 
@@ -353,41 +345,58 @@ jumlahElem0.addEventListener('input', function() {
 
 });
 
-    // Fungsi untuk menghitung total
-    function calculateTotal() {
-        var totalLiter = 0;
-        var totalRupiah = 0;
-        var totalKg = 0;
-        var totalJiwa = 0;
+function calculateTotal() {
+    var totalLiter = 0;
+    var totalRupiah = 0;
+    var totalKg = 0;
+    var totalJiwa = 0;
 
-        var tableBody = document.querySelector('#muzakkiTable tbody');
-        var rows = tableBody.rows;
-        for (var i = 0; i < rows.length; i++) {
-            var satuanSelect = rows[i].querySelector('select[name="satuan[' + i + ']"]');
-            var jumlahInput = rows[i].querySelector('input[name="subtotal[]"]');
-             var type = satuanSelect.value;
-            var jumlah = parseFloat(jumlahInput.value.replace(',', '.')); // Replace koma dengan titik
- 
-            if (isNaN(jumlah)) {
-                jumlah = 0;
-            }
- 
+    var tableBody = document.querySelector('#muzakkiTable tbody');
+    var rows = tableBody.rows;
+    for (var i = 0; i < rows.length; i++) {
+        var satuanSelect = rows[i].querySelector('select[name="satuan[' + i + ']"]');
+        var jumlahInput = rows[i].querySelector('input[name="subtotal[]"]');
+        var jumlahJiwaInput = rows[i].querySelector('input[name="jumlah_jiwa[]"]');
 
-            if (type === 'Liter') {
-                totalLiter += jumlah;
-            } else if (type === 'Rupiah') {
-                totalRupiah += jumlah;
-            } else if (type === 'Kg') {
-                totalKg += jumlah;
-            }
+        var type = satuanSelect.value; 
+        var jumlah = parseFloat(jumlahInput.value.replace(/\./g, '').replace(',', '.')) || 0;
+        var jumlahJiwa = parseFloat(jumlahJiwaInput.value) || 0;
 
-         }
+        // Kalkulasi berdasarkan jenis satuan
+        if (type === 'Liter') {
+            totalLiter += jumlah * jumlahJiwa;
+        } else if (type === 'Rupiah') {
+            totalRupiah += jumlah * jumlahJiwa;
+        } else if (type === 'Kg') {
+            totalKg += jumlah * jumlahJiwa;
+        }
 
-        // Update total liter, total rupiah, total kg, dan total jiwa di tabel
-        document.getElementById('ttlLiter').textContent = totalLiter.toLocaleString();
-        document.getElementById('ttlKg').textContent = totalKg.toLocaleString();
-        document.getElementById('ttlRupiah').textContent = totalRupiah.toLocaleString();
-     }
+       
+        totalJiwa += jumlahJiwa;
+
+        var subtotal = jumlahJiwa * jumlah;
+
+        document.querySelector('#subtotal' + i).textContent = subtotal.toLocaleString('id-ID');
+        document.querySelector('#subtotaltext' + i).textContent = satuanSelect.value;
+    }
+
+    // Update nilai total dengan format sesuai kebutuhan
+    document.getElementById('ttlLiter').textContent = totalLiter.toLocaleString('id-ID');
+     document.getElementById('ttlRupiah').textContent =totalRupiah.toLocaleString('id-ID');
+     document.getElementById('ttlKg').textContent =totalKg.toLocaleString('id-ID');
+    document.getElementById('ttlJiwa').textContent = totalJiwa;
+}
+
+// Fungsi untuk format angka tanpa pembulatan
+function formatNumberWithoutRounding(number, decimalPlaces) {
+    const parts = number.toString().split(',');
+    if (parts.length === 1) return parts[0]; // Tidak ada desimal
+    const integerPart = parts[0];
+    const decimalPart = parts[1].substring(0, decimalPlaces); // Potong tanpa pembulatan
+    return `${integerPart}.${decimalPart}`;
+}
+
+
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

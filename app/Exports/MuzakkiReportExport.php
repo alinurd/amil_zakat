@@ -44,6 +44,7 @@ class MuzakkiSheetRp implements FromCollection, WithHeadings, ShouldAutoSize
         $dataKg = [];
 
         $totalsRupiah = 0;
+        $ttlJiawaRP = 0;
         $totalsLiter = 0;
         $totalsKg = 0;
 
@@ -59,7 +60,8 @@ class MuzakkiSheetRp implements FromCollection, WithHeadings, ShouldAutoSize
 
                         switch ($satuan) {
                             case 'Rupiah':
-                                $totalsRupiah += $jumlah_bayar;
+                                $totalsRupiah += $jumlah_bayar*$item->jumlah_jiwa;
+                                $ttlJiawaRP += $item->jumlah_jiwa;
                                 $dataRupiah[] = [
                                     'No' => $no++,
                                     'Code Invoice' => $item->code,
@@ -69,7 +71,10 @@ class MuzakkiSheetRp implements FromCollection, WithHeadings, ShouldAutoSize
                                     'Kategori' => $item->kategori->nama_kategori,
                                     'Type' => $item->type,
                                     'Satuan' => $satuan,
-                                    'Jumlah' => $jumlah_bayar,
+                                    'Jumlah' => $item->jumlah_bayar,
+                                    'Jml Jiwa' => $item->jumlah_jiwa,
+'Subtottal' => (is_numeric($item->jumlah_bayar) ? $item->jumlah_bayar : 0) 
+             * (is_numeric($item->jumlah_jiwa) ? $item->jumlah_jiwa : 0),
                                 ];
                                 break;
                           
@@ -91,9 +96,11 @@ class MuzakkiSheetRp implements FromCollection, WithHeadings, ShouldAutoSize
             'Dibayarkan Oleh' => '',
             'Nama' => '',
             'Kategori' => '',
-            'Type' => 'Total',
-            'Satuan' => 'Rupiah',
-            'Jumlah' => $totalsRupiah,
+            'Type' => '',
+            'Satuan' => '',
+            'Jumlah' => 'Total',
+            'Jml Jiwa' => $ttlJiawaRP,
+            'Subtotal' => $totalsRupiah,
         ];
         
       
@@ -114,6 +121,8 @@ class MuzakkiSheetRp implements FromCollection, WithHeadings, ShouldAutoSize
             'Type',
             'Satuan',
             'Jumlah',
+            'Jml Jiwa',
+            'Subtottal',
         ];
     }
 
@@ -147,6 +156,7 @@ class MuzakkiSheetLt implements FromCollection, WithHeadings, ShouldAutoSize
 
         $totalsRupiah = 0;
         $totalsLiter = 0;
+        $ttlJiawaLTR = 0;
         $totalsKg = 0;
 
         $no = 1;
@@ -161,7 +171,8 @@ class MuzakkiSheetLt implements FromCollection, WithHeadings, ShouldAutoSize
 
                         switch ($satuan) {
                             case 'Liter':
-                                $totalsLiter += $jumlah_bayar;
+                                $totalsLiter += $jumlah_bayar *$item->jumlah_jiwa;
+                                $ttlJiawaLTR += $item->jumlah_jiwa;
                                 $dataLiter[] = [
                                     'No' => $no++,
                                     'Code Invoice' => $item->code,
@@ -171,10 +182,15 @@ class MuzakkiSheetLt implements FromCollection, WithHeadings, ShouldAutoSize
                                     'Kategori' => $item->kategori->nama_kategori,
                                     'Type' => $item->type,
                                     'Satuan' => $satuan,
-                                    'Jumlah' => $jumlah_bayar,
+                                    'Jumlah' => $item->jumlah_bayar,
+                                    'Jml Jiwa' => $item->jumlah_jiwa,
+'Subtottal' => (is_numeric($item->jumlah_bayar) ? $item->jumlah_bayar : 0) 
+             * (is_numeric($item->jumlah_jiwa) ? $item->jumlah_jiwa : 0),
                                 ];
                                 break;
                         }
+
+                        
                     } else {
                         // Lakukan penanganan jika $jumlah_bayar bukan numerik 
                         // Contoh: set nilai $jumlah_bayar ke 0 atau lakukan tindakan lain
@@ -193,15 +209,18 @@ class MuzakkiSheetLt implements FromCollection, WithHeadings, ShouldAutoSize
             'Dibayarkan Oleh' => '',
             'Nama' => '',
             'Kategori' => '',
-            'Type' => 'Total',
-            'Satuan' => 'Liter',
-            'Jumlah' => $totalsLiter,
+            'Type' => '',
+            'Satuan' => '',
+            'Jumlah' => 'Total',
+            'Jml Jiwa' => $ttlJiawaLTR,
+            'Subtotal' => $totalsLiter,
       ];
   
 
         return collect(array_merge($dataRupiah, $dataLiter, $dataKg));
     }
 
+  
     public function headings(): array
     {
         return [
@@ -214,6 +233,8 @@ class MuzakkiSheetLt implements FromCollection, WithHeadings, ShouldAutoSize
             'Type',
             'Satuan',
             'Jumlah',
+            'Jml Jiwa',
+            'Subtottal',
         ];
     }
 
@@ -248,6 +269,7 @@ class MuzakkiSheetKg implements FromCollection, WithHeadings, ShouldAutoSize
         $totalsRupiah = 0;
         $totalsLiter = 0;
         $totalsKg = 0;
+        $ttlJiawaKG = 0;
 
         $no = 1;
         foreach ($detail as $item) {
@@ -261,7 +283,8 @@ class MuzakkiSheetKg implements FromCollection, WithHeadings, ShouldAutoSize
 
                         switch ($satuan) {
                             case 'Kg':
-                                $totalsKg += $jumlah_bayar;
+                                $totalsKg += $jumlah_bayar *$item->jumlah_jiwa;
+                                $ttlJiawaKG += $item->jumlah_jiwa; 
                                 $dataKg[] = [
                                     'No' => $no++,
                                     'Code Invoice' => $item->code,
@@ -271,7 +294,10 @@ class MuzakkiSheetKg implements FromCollection, WithHeadings, ShouldAutoSize
                                     'Kategori' => $item->kategori->nama_kategori,
                                     'Type' => $item->type,
                                     'Satuan' => $satuan,
-                                    'Jumlah' => $jumlah_bayar,
+                                    'Jumlah' => $item->jumlah_bayar,
+                                    'Jml Jiwa' => $item->jumlah_jiwa,
+'Subtottal' => (is_numeric($item->jumlah_bayar) ? $item->jumlah_bayar : 0) 
+             * (is_numeric($item->jumlah_jiwa) ? $item->jumlah_jiwa : 0),
                                 ];
                                 break;
                         }
@@ -294,9 +320,11 @@ class MuzakkiSheetKg implements FromCollection, WithHeadings, ShouldAutoSize
             'Dibayarkan Oleh' => '',
             'Nama' => '',
             'Kategori' => '',
-            'Type' => 'Total',
-            'Satuan' => 'Kg',
-            'Jumlah' => $totalsKg,
+            'Type' => '',
+            'Satuan' => '',
+            'Jumlah' => 'Total',
+            'Jml Jiwa' => $ttlJiawaKG,
+            'Subtotal' => $totalsKg, 
       ];
         
 
@@ -315,6 +343,8 @@ class MuzakkiSheetKg implements FromCollection, WithHeadings, ShouldAutoSize
             'Type',
             'Satuan',
             'Jumlah',
+            'Jml Jiwa',
+            'Subtottal',
         ];
     }
     public function title(): string
