@@ -27,14 +27,28 @@
 
       ?>
       @foreach($data['header'] as $header)
-      @php
-      $details = $data['detail']->filter(fn($detail) => $detail->code == $header->code);
-      $totalJumlahBayar = $details->sum('jumlah_bayar');
-      $totalSubtotal = $details->sum(fn($detail) => $detail->jumlah_bayar * $detail->jumlah_jiwa);
+      
+@php
+    // Filter data detail berdasarkan code
+    $details = $data['detail']->filter(fn($detail) => $detail->code == $header->code);
 
-      $totalKeseluruhanBayar += $totalJumlahBayar;
-      $totalKeseluruhanSubtotal += $totalSubtotal;
-      @endphp
+    // Menghitung totalJumlahBayar dengan mengganti null atau string kosong menjadi 0
+    $totalJumlahBayar = $details->sum(fn($detail) => 
+        floatval(empty($detail->jumlah_jiwa) ? 0 : $detail->jumlah_jiwa)
+    );
+
+    // Menghitung totalSubtotal dengan memastikan tidak ada nilai null atau kosong
+    $totalSubtotal = $details->sum(fn($detail) => 
+        floatval(empty($detail->jumlah_bayar) ? 0 : $detail->jumlah_bayar) * 
+        floatval(empty($detail->jumlah_jiwa) ? 0 : $detail->jumlah_jiwa)
+    );
+
+    // Menambahkan totalJumlahBayar ke totalKeseluruhanBayar
+    $totalKeseluruhanBayar += $totalJumlahBayar;
+
+    // Menambahkan totalSubtotal ke totalKeseluruhanSubtotal
+    $totalKeseluruhanSubtotal += $totalSubtotal;
+@endphp
 
       @foreach($details as $index => $detail)
       @php
