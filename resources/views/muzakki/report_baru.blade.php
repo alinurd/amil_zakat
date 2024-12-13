@@ -9,7 +9,7 @@
          <th style="border: 1px solid #ddd; padding: 8px; text-align: center;">SATUAN</th>
          <th style="border: 1px solid #ddd; padding: 8px; text-align: center;">JUMLAH</th>
          <th style="border: 1px solid #ddd; padding: 8px; text-align: center;">JML JIWA</th>
-         <th style="border: 1px solid #ddd; padding: 8px; text-align: center;">SUBTOTAL</th>
+         <th style="border: 1px solid #ddd; padding: 8px; text-align: center;">SUBTOTAL <br> (jml*jiwa)</th>
       </tr>
    </thead>
    <tbody>
@@ -77,9 +77,9 @@
          <td style="border: 1px solid #ddd; padding: 8px;">{{ $detail->kategori->nama_kategori }}</td>
          <td style="border: 1px solid #ddd; padding: 8px;">{{ $detail->user->nama_lengkap }}</td>
          <td style="border: 1px solid #ddd; padding: 8px;">{{ $detail->satuan }}</td>
-         <td style="border: 1px solid #ddd; padding: 8px;">{{ $detail->jumlah_bayar }}</td>
-         <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{ $detail->jumlah_jiwa }}</td>
-         <td style="border: 1px solid #ddd; padding: 8px;">{{ $detail->jumlah_bayar * $detail->jumlah_jiwa }}</td>
+         <td style="border: 1px solid #ddd; padding: 8px;">{{ $jumlahBayar }}</td>
+         <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{ $jumlahJiwa }}</td>
+         <td style="border: 1px solid #ddd; padding: 8px;">{{ $jumlahBayar * $jumlahJiwa }}</td>
       </tr>
       @endforeach
       <tr>
