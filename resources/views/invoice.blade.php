@@ -67,7 +67,7 @@
         <div class="invoice-header">
             <img src="{{asset('images/icons/header.jpg')}}" style="width: 100%;" />
             <p><b><h3>#{{$header[0]['code']}}</h3></b></p>
-            <p style="text-align: right;"> <i>Jakarta, {{$header[0]['created_at']}}</i></p> 
+            <p style="text-align: right;"> <i>Jakarta, {{date('d-m-Y', strtotime($header[0]['created_at']))}}</i></p> 
         </div>
         <div class="invoice-body">
              <span>Alhamdulillah, telah diterima penunaian zis/fidyah dari Bapak/ibu: <br><b><u>{{$header[0]['user']['nama_lengkap']}}</u></b></span>

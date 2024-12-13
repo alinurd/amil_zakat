@@ -7,7 +7,7 @@
                <div class="row">
                   <div class="col-sm-12">
                      <br><br><br>
-                     <h4 class="mb-2">Invoice <span class="float-end"><b>#{{$data['header'][0]['code']}}</b> <br><i  style="font-size: 11px;">Jakarta, <?= date("d-m-Y"); ?></i></span></h4>
+                     <h4 class="mb-2">Invoice <span class="float-end"><b>#{{$data['header'][0]['code']}}</b> <br><i  style="font-size: 11px;">Jakarta, <?= date('d-m-Y', strtotime($data['header'][0]['created_at'])); ?></i></span></h4>
                      <h5 class="mb-3">Hello, {{$data['header'][0]['user']['nama_lengkap']}} </h5>
                      <p>terima kasih sudah membayarkan zakat</p>
                   </div>
