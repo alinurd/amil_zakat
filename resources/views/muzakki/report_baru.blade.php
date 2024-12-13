@@ -51,18 +51,23 @@
 @endphp
 
       @foreach($details as $index => $detail)
-      @php
-      if($detail->satuan == 'Kg') {
-      $totalKeseluruhanKG += $detail->jumlah_bayar * $detail->jumlah_jiwa;
-      $totalKeseluruhanKGJiwa += $detail->jumlah_jiwa;
-      } elseif($detail->satuan == 'Liter') {
-      $totalKeseluruhanLITER += $detail->jumlah_bayar * $detail->jumlah_jiwa;
-      $totalKeseluruhanLITERJiwa += $detail->jumlah_jiwa;
-      } elseif($detail->satuan == 'Rupiah') {
-      $totalKeseluruhanRUPIAH += $detail->jumlah_bayar * $detail->jumlah_jiwa;
-      $totalKeseluruhanRUPIAHJiwa += $detail->jumlah_jiwa;
-      }
-      @endphp
+     @php
+    // Pastikan nilai jumlah_bayar dan jumlah_jiwa tidak null atau kosong
+    $jumlahBayar = floatval(empty($detail->jumlah_bayar) ? 0 : $detail->jumlah_bayar);
+    $jumlahJiwa = floatval(empty($detail->jumlah_jiwa) ? 0 : $detail->jumlah_jiwa);
+
+    if ($detail->satuan == 'Kg') {
+        $totalKeseluruhanKG += $jumlahBayar * $jumlahJiwa;
+        $totalKeseluruhanKGJiwa += $jumlahJiwa;
+    } elseif ($detail->satuan == 'Liter') {
+        $totalKeseluruhanLITER += $jumlahBayar * $jumlahJiwa;
+        $totalKeseluruhanLITERJiwa += $jumlahJiwa;
+    } elseif ($detail->satuan == 'Rupiah') {
+        $totalKeseluruhanRUPIAH += $jumlahBayar * $jumlahJiwa;
+        $totalKeseluruhanRUPIAHJiwa += $jumlahJiwa;
+    }
+@endphp
+
       <tr>
          @if($index === 0)
          <td rowspan="{{ $details->count() }}" style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{ $no++ }}</td>
