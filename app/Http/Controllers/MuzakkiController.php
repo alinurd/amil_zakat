@@ -94,6 +94,7 @@ class MuzakkiController extends Controller
     }
     public function store(Request $request)
     {
+        
         $validatedData = $request->validate([
             'dibayarkan' => 'required',
             'user' => 'required|array',
@@ -162,12 +163,15 @@ class MuzakkiController extends Controller
         return redirect()->route('invoice', ['code' => $MuzakkiHeader->code])->withSuccess(__('Pembayaran berhasil dan  invoice telah terkirim kepada ' . $dibayarkan->nama_lengkap));
     }
 
-    public function update(Request $request)
-    {
-        // dd($request);
+   public function update(Request $request)
+{
+    // Log awal untuk debugging
+    \Log::info('Memulai proses update dengan data request:', $request->all());
+
+    try {
+        // Validasi data
         $validatedData = $request->validate([
             'dibayarkan' => 'required',
-            'user' => 'required|array',
             'user' => 'required|array',
             'user.*' => 'exists:users,id',
             'kategori' => 'required|array',
@@ -175,78 +179,67 @@ class MuzakkiController extends Controller
             'type' => 'required|array',
             'satuan' => 'required|array',
             'jumlah' => 'required|array',
+            'jumlah_jiwa' => 'required|array',
         ]);
 
-        $lastId = MuzakkiHeader::orderByDesc('id')->first();
-        $x = $lastId ? $lastId->id : 0;
-
-        $MuzakkiHeader = MuzakkiHeader::where('code', $request->code)
-        ->update([
+        // Update MuzakkiHeader
+        MuzakkiHeader::where('code', $request->code)->update([
             'user_id' => $validatedData['dibayarkan'],
         ]);
-    
 
-     
-        foreach ($request->id as $key => $id) {
-            $muzakki = Muzakki::find($id);
-            $oldValues = $muzakki->getOriginal(); // Get the original values before update
-            $oldUser = User::where('id', $oldValues['user_id'])->first();
-            $oldUserafter = User::where('id', $muzakki->user_id)->first();
-
-            // Update the Muzakki record
-            $muzakki->user_id = $validatedData['user'][$key];
-            $muzakki->jumlah_bayar = $validatedData['jumlah'][$key];
-            $muzakki->jumlah_jiwa = $request['jumlah_jiwa'][$key];
-            $muzakki->kategori_id = $validatedData['kategori'][$key];
-            $muzakki->type = $validatedData['type'][$key];
-            $muzakki->satuan = $validatedData['satuan'][$key];
-            $muzakki->save();
-            $history = new TransHistory();
-            $history->muzakki_id = $muzakki->id;
-            $history->code =$request->code;
-            $history->method ="update";
-            $history->user =Auth::user()->nama_lengkap;
-             $history->changes = json_encode([
-                 'code_hst' =>$this->generateCodeById("HST", $x + 1),
-                'user_id' => [
-                    'before' => $oldUser->nama_lengkap,
-                    'after' => $oldUserafter->nama_lengkap,
-                 ],
-                'jumlah_bayar' => [
-                    'before' => $oldValues['jumlah_bayar'],
-                    'after' => $muzakki->jumlah_bayar,
-                ],
-                'jumlah_jiwa' => [
-                    'before' => $oldValues['jumlah_jiwa'],
-                    'after' => $muzakki->jumlah_jiwa,
-                ],
-                'kategori_id' => [
-                    'before' => $oldValues['kategori_id'],
-                    'after' => $muzakki->kategori_id,
-                ],
-                'type' => [
-                    'before' => $oldValues['type'],
-                    'after' => $muzakki->type,
-                ],
-                'satuan' => [
-                    'before' => $oldValues['satuan'],
-                    'after' => $muzakki->satuan,
-                ],
-            ]);
-            $history->save();
+        // Loop melalui data yang diberikan
+        foreach ($validatedData['user'] as $key => $user) {
+            if (empty($request->id[$key])) {
+                // Data baru
+                $muzakki = new Muzakki([
+                    'code' => $request->code,
+                    'user_id' => $user,
+                    'jumlah_bayar' => $validatedData['jumlah'][$key],
+                    'jumlah_jiwa' => $validatedData['jumlah_jiwa'][$key],
+                    'kategori_id' => $validatedData['kategori'][$key],
+                    'type' => $validatedData['type'][$key],
+                    'satuan' => $validatedData['satuan'][$key],
+                ]);
+        
+                if (!$muzakki->save()) {
+                    \Log::error('Gagal menyimpan Muzakki baru:', $muzakki->toArray());
+                    throw new \Exception('Gagal menyimpan data Muzakki baru.');
+                }
+        
+                // Log TransHistory untuk data baru
+                  
+            } else {
+                // Data lama (update)
+                $muzakki = Muzakki::find($request->id[$key]);
+                if (!$muzakki) {
+                    throw new \Exception('Data Muzakki dengan ID ' . $request->id[$key] . ' tidak ditemukan.');
+                }
+        
+                $oldValues = $muzakki->getOriginal();
+                $muzakki->user_id = $user;
+                $muzakki->jumlah_bayar = $validatedData['jumlah'][$key];
+                $muzakki->jumlah_jiwa = $validatedData['jumlah_jiwa'][$key];
+                $muzakki->kategori_id = $validatedData['kategori'][$key];
+                $muzakki->type = $validatedData['type'][$key];
+                $muzakki->satuan = $validatedData['satuan'][$key];
+        
+                if (!$muzakki->save()) {
+                    \Log::error('Gagal memperbarui Muzakki:', $muzakki->toArray());
+                    throw new \Exception('Gagal memperbarui data Muzakki.');
+                }
+        
+              
+            }
         }
         
-    $no = '62895620014242';
-        $msg = "Perubahan data muzzaki dilakukan oleh " . Auth::user()->nama_lengkap . ".\n";
-
-        $msg .= "No. Invoice: #" . $request->code . "\n\n\n ";
-        $msg .= "Lihat detail: https://zis-alhasanah.com/history/showdataupdate/" . $request->code;
- 
-        $this->sendMassage2($no, $msg, $request->code);
-
-        
-        return redirect()->route('invoice', ['code' => $request->code])->withSuccess(__('Pembayaran berhasil diupdate ' ));
+        return redirect()->route('invoice', ['code' => $request->code])->withSuccess(__('Pembayaran berhasil diupdate'));
+    } catch (\Exception $e) {
+        // Log kesalahan jika terjadi exception
+        \Log::error('Error dalam proses update:', ['message' => $e->getMessage()]);
+        return back()->withErrors(__('Terjadi kesalahan saat memperbarui data: ') . $e->getMessage());
     }
+}
+    
 
     public function invoice($code)
     {
