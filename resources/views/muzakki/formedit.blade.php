@@ -162,6 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('getTotal').addEventListener('click', function() {
         console.log("jalan")
         calculateTotal()
+        caclculateSubtotal()
     })
     document.getElementById('addRow').addEventListener('click', function() {
         
@@ -309,8 +310,7 @@ function calculateSubtotalForRow(rowCount) {
 
     rows.forEach(function(row, index) {
         var jumlahJiwa = parseFloat(row.querySelector('#jumlah_jiwa' + index).value);
-        var jumlah = parseFloat(row.querySelector('#jumlah_jiwa' + index).value.replace(',', '.')); // Replace koma dengan titik
-        var jumlah = parseFloat(row.querySelector('#jumlah' + index).value.replace(',', '.')); // Replace koma dengan titik
+         var jumlah = parseFloat(row.querySelector('#jumlah' + index).value.replace(',', '.')); // Replace koma dengan titik
         var satuanSelect = row.querySelector('#satuan' + index);
         var typeInput = row.querySelector('input[name^="type[' + index + ']"]:checked');
         var type = typeInput ? typeInput.value : '';
