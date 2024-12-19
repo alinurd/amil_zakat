@@ -1,0 +1,2 @@
+[12-Dec-2024 11:02:43 UTC] PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to allocate 36864 bytes) in phar:///usr/local/bin/composer1.phar/src/Composer/DependencyResolver/Pool.php on line 214
+[12-Dec-2024 11:08:30 UTC] PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to allocate 36864 bytes) in phar:///usr/local/bin/composer1.phar/src/Composer/DependencyResolver/Pool.php on line 214
