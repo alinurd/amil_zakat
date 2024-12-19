@@ -75,7 +75,7 @@
                <td rowspan="{{ count($header->details) }}" style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{ $header->user->nama_lengkap }}</td>
                @endif
                <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{ $detail->kategori->nama_kategori }}</td>
-               <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{$detail->user_id}}=>userid</td>
+               <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{$detail->user->nama_lengkap}}</td>
                <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{ $detail->satuan }}</td>
                <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{ $jumlahBayar }}</td>
                <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{ $jumlahJiwa }}</td>
