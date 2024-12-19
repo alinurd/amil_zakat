@@ -50,24 +50,24 @@
             }
 
             if ($satuan == 'Kg') {
-               $totalKeseluruhanKG+=$subtotal;
-               $totalKeseluruhanKGJiwa+=$jumlahJiwa;
+               $totalKeseluruhanKG += $subtotal;
+               $totalKeseluruhanKGJiwa += $jumlahJiwa;
                $totalsByCode[$code]['KG'] += $subtotal;
                $totalsByCode[$code]['KGJIWA'] += $jumlahJiwa;
             } elseif ($satuan == 'Liter') {
-               $totalKeseluruhanLITER+=$subtotal;
-               $totalKeseluruhanLITERJiwa+=$jumlahJiwa;
+               $totalKeseluruhanLITER += $subtotal;
+               $totalKeseluruhanLITERJiwa += $jumlahJiwa;
                $totalsByCode[$code]['Liter'] += $subtotal;
                $totalsByCode[$code]['LiterJIWA'] += $jumlahJiwa;
             } elseif ($satuan == 'Rupiah') {
-               $totalKeseluruhanRUPIAH+=$subtotal;
-               $totalKeseluruhanRUPIAHJiwa+=$jumlahJiwa;
+               $totalKeseluruhanRUPIAH += $subtotal;
+               $totalKeseluruhanRUPIAHJiwa += $jumlahJiwa;
                $totalsByCode[$code]['Rupiah'] += $subtotal;
                $totalsByCode[$code]['RupiahJIWA'] += $jumlahJiwa;
             }
- 
 
-            ?>
+
+      ?>
             <tr>
                @if($index == 0)
                <td rowspan="{{ count($header->details) }}" style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{$no++}}</td>
@@ -79,37 +79,43 @@
                <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{ $detail->satuan }}</td>
                <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{ $jumlahBayar }}</td>
                <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{ $jumlahJiwa }}</td>
-               <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{ $subtotal }}</td>
+               <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">
+                  @if($detail->satuan == 'Rupiah')
+                  {{ number_format($subtotal, 2, ',', '.') }}
+                  @else
+                  {{ $subtotal }}
+                  @endif
+
+               </td>
             </tr>
-             <?php
+            <?php
          }
 
          foreach ($totalsByCode as $code => $totals) {
-            if($header->code==$code){
-         ?>
-            <tr>
-               <td colspan="5" rowspan="3" style="border: 1px solid #ddd; text-align: center; font-weight: bold; padding: 8px;">{{ $code }}</td>
-               <td colspan="2" style="background-color:rgb(230, 227, 227); border: 1px solid #ddd; padding: 8px; text-align: center;">KG:</td>
-               <td style="background-color:rgb(230, 227, 227); border: 1px solid #ddd; padding: 8px; text-align: center;">{{$totals['KGJIWA']}}</td>
-               <td style="background-color:rgb(230, 227, 227);  border: 1px solid #ddd; padding: 8px; text-align: center;">{{$totals['KG']}}</td>
-             </tr>
-            <tr style="background-color:rgb(214, 213, 213);  ">
-               <td colspan="2" style="border: 1px solid #ddd; padding: 8px; text-align: center;">Liter:</td>
-               <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{$totals['LiterJIWA']}}</td>
-               <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{$totals['Liter']}}</td>
-             </tr>
-             <tr style="background-color:rgb(206, 203, 203);  ">
-             <td colspan="2" style="border: 1px solid #ddd; padding: 8px; text-align: center;">Rupiah:</td>
-               <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{$totals['RupiahJIWA']}}</td>
-               <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{$totals['Rupiah']}}</td>
-             </tr>
-             
+            if ($header->code == $code) {
+            ?>
+               <tr>
+                  <td colspan="5" rowspan="3" style="border: 1px solid #ddd; text-align: center; font-weight: bold; padding: 8px;">{{ $code }}</td>
+                  <td colspan="2" style="background-color:rgb(230, 227, 227); border: 1px solid #ddd; padding: 8px; text-align: center;">KG:</td>
+                  <td style="background-color:rgb(230, 227, 227); border: 1px solid #ddd; padding: 8px; text-align: center;">{{$totals['KGJIWA']}}</td>
+                  <td style="background-color:rgb(230, 227, 227);  border: 1px solid #ddd; padding: 8px; text-align: center;">{{$totals['KG']}}</td>
+               </tr>
+               <tr>
+                  <td colspan="2" style="background-color:rgb(214, 213, 213); border: 1px solid #ddd; padding: 8px; text-align: center;">Liter:</td>
+                  <td style="background-color:rgb(214, 213, 213); border: 1px solid #ddd; padding: 8px; text-align: center;">{{$totals['LiterJIWA']}}</td>
+                  <td style="background-color:rgb(214, 213, 213); border: 1px solid #ddd; padding: 8px; text-align: center;">{{$totals['Liter']}}</td>
+               </tr>
+               <tr>
+                  <td colspan="2" style="background-color:rgb(214, 213, 213); border: 1px solid #ddd; padding: 8px; text-align: center;">Rupiah:</td>
+                  <td style="background-color:rgb(214, 213, 213); border: 1px solid #ddd; padding: 8px; text-align: center;">{{$totals['RupiahJIWA']}}</td>
+                  <td style="background-color:rgb(214, 213, 213); border: 1px solid #ddd; padding: 8px; text-align: center;">{{ number_format($totals['Rupiah'], 2, ',', '.') }}</td>
+               </tr>
       <?php
-         }
+            }
          }
       }
-      ?> 
-     
+      ?>
+
 
       <!--SATUAN KG -->
       <tr>
@@ -129,8 +135,8 @@
       <tr>
          <td colspan="2" style="border: 1px solid #ddd; text-align: center; font-weight: bold; padding: 8px; background-color: #494949; color:#fff ">RUPIAH</td>
          <td style="border: 1px solid #ddd; text-align: center; font-weight: bold; padding: 8px; background-color: #494949; color:#fff ">{{ $totalKeseluruhanRUPIAHJiwa }}</td>
-         <td style="border: 1px solid #ddd; text-align: center; font-weight: bold; padding: 8px; background-color: #494949; color:#fff ">{{ $totalKeseluruhanRUPIAH }}</td>
+         <td style="border: 1px solid #ddd; text-align: center; font-weight: bold; padding: 8px; background-color: #494949; color:#fff ">{{ number_format($totalKeseluruhanRUPIAH, 2, ',', '.')  }}</td>
       </tr>
-   
+
    </tbody>
 </table>
