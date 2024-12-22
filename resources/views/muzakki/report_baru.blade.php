@@ -110,7 +110,7 @@
                   <td style="background-color:rgb(199, 197, 197); border: 1px solid #ddd; padding: 8px; text-align: center;">{{$totals['RupiahJIWA']}}</td>
                   <td style="background-color:rgb(199, 197, 197); border: 1px solid #ddd; padding: 8px; text-align: center;">{{ number_format($totals['Rupiah'], 2, ',', '.') }}</td>
                </tr>
-               <tr style=" height: 10px;">
+               <tr style=" height: 15px;">
                   <td colspan="9"></td>
                </tr>
       <?php
