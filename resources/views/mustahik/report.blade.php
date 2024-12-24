@@ -14,7 +14,7 @@
                         <div class="col-sm-6">
                         <select name="rt_rw" id="rt_rw" class="form-control">
                            <option value="">Pilih RT/RW</option>
-                           <option value="1">RT.001/RW.004</option>
+                           <option value="1">RT.001/RW.004</option> 
                            <option value="2">RT.002/RW.004</option>
                            <option value="3">RT.003/RW.004</option>
                            <option value="4">RT.004/RW.004</option>
@@ -62,7 +62,7 @@
                   </div>
                   @endif
             </div>   
-            <div class="card-body">
+            <div class="card-body"> 
                <div class="table-responsive">
                <table id="user-list-table" class="table table-striped" role="grid" data-toggle="data-table">
                      <thead>
