@@ -19,6 +19,7 @@ class Muzakki extends Model
     protected $fillable = [
         'code',
         'user_id',
+        'created_at',
         'jumlah_bayar',
         'kategori_id',
         'type',

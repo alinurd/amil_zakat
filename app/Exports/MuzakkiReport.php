@@ -151,23 +151,45 @@ class MuzakkiReport implements FromCollection, WithHeadings, ShouldAutoSize{
         return Excel::download(new MuzakkiReport, "Muzakki-Report-" . date("Y") . ".xlsx");
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $data['detail'] = Muzakki::with('user', 'kategori')->get();
-        $data['header'] = MuzakkiHeader::with('user')->get();
+        $queryDetail = Muzakki::with('user', 'kategori');
+        $queryHeader = MuzakkiHeader::with('user');
+
+        // Filter berdasarkan tanggal jika dipilih
+        if ($request->has('tanggal') && $request->tanggal) {
+            $tanggal = $request->input('tanggal');
+            $queryDetail->whereDate('created_at', $tanggal);
+            $queryHeader->whereDate('created_at', $tanggal); // Pastikan ini sesuai dengan kolom yang relevan
+        }
+
+        $data['detail'] = $queryDetail->get();
+        $data['header'] = $queryHeader->get();
 
         return view('muzakki.report', compact('data'));
     }
-    public function exportMuzakkiReport()
-{
-    $thn=date('Y');
-    header("Content-type:appalication/vnd.ms-excel");
-    header("content-disposition:attachment;filename=Muzzaki-Report-".$thn.".xls");
-    
-    $data['detail'] = Muzakki::with('user', 'kategori')->get();
-    $data['header'] = MuzakkiHeader::with('user', 'details')->get();
 
-    return view('muzakki.report_baru', compact('data'));
- }
+    public function exportMuzakkiReport(Request $request) 
+    {
+        $tanggal = $request->input('tanggal'); // Tangkap parameter tanggal
+        $thn = date('Y');
+        header("Content-type: application/vnd.ms-excel");
+        header("Content-Disposition: attachment; filename=Muzzaki-Report-{$thn}.xls");
+
+        // Filter data berdasarkan tanggal jika parameter 'tanggal' ada
+        $queryDetail = Muzakki::with('user', 'kategori');
+        $queryHeader = MuzakkiHeader::with('user', 'details');
+
+        if ($tanggal) {
+            $queryDetail->whereDate('created_at', $tanggal);
+            $queryHeader->whereDate('created_at', $tanggal);
+        }
+
+        $data['detail'] = $queryDetail->get();
+        $data['header'] = $queryHeader->get();
+
+        // Gunakan view untuk menghasilkan file Excel
+        return view('muzakki.report_baru', compact('data'));
+    } 
 
 }
