@@ -76,7 +76,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Dashboard Routes
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
     
-    // Users Module 
+    // Users Module  
     Route::resource('users', UserController::class);   
     Route::resource('kategori', KategoriController::class); 
     
