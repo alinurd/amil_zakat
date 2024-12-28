@@ -1,6 +1,6 @@
 <x-app-layout :assets="$assets ?? []">
    <div class="row" >
-      <div class="col-md-12 col-lg-12" >
+      <div class="col-md-12 col-lg-12">
          <div class="row row-cols-1">
             <div class="d-slider1 overflow-hidden ">
                <ul class="swiper-wrapper list-inline m-0 p-0 mb-2">
@@ -73,11 +73,34 @@
                <div class="swiper-button swiper-button-prev"></div>
             </div>
          </div>
+
+         <div class="row row-cols-1">
+            <div class="d-slider1 overflow-hidden">
+               <ul class="swiper-wrapper list-inline m-0 p-0 mb-2">
+                     @foreach ($createdByData as $data)
+                        <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="700">
+                           <div class="card-body">
+                                 <div class="progress-widget">                                    
+                                    <div class="progress-detail">
+                                       <strong class="text-black">Pendapatan Petugas Zakat <span class="text-primary">Muzakki:</span></strong> {{ $data['user'] }} <br><br>
+                                       <span class="text-primary" style="font-size: 16px;">Uang:</span> Rp{{ number_format($data['total_uang'], 2) }} <br>
+                                       <span class="text-primary" style="font-size: 16px;">Beras (Kg):</span> {{ number_format($data['total_beras_kg'], 2) }} Kg <br>
+                                       <span class="text-primary" style="font-size: 16px;">Beras (Liter):</span> {{ number_format($data['total_beras_liter'], 2) }} Liter
+                                    </div>
+                                 </div>
+                           </div>
+                        </li>
+                     @endforeach
+               </ul>
+               <div class="swiper-button swiper-button-next"></div>
+               <div class="swiper-button swiper-button-prev"></div>
+            </div>
+         </div>
       </div>
 
 
-            <div class="alert alert-bottom alert-warning alert-dismissible fade show" id="card-body" style="display: none;" role="alert">
-    <div class="card-body"> 
+      <div class="alert alert-bottom alert-warning alert-dismissible fade show" id="card-body" style="display: none;" role="alert">
+      <div class="card-body"> 
         <center>
             <strong>
                 <p class="mb-2">Masa Aktif Aplikasi Anda Akan Segera Berahir Pada <br><u><strong> 15 Februari 2025 00:00:00</strong></u> </p>

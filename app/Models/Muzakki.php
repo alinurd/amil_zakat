@@ -22,6 +22,7 @@ class Muzakki extends Model
         'created_at',
         'jumlah_bayar',
         'kategori_id',
+        'created_by',
         'type',
         'jumlah_jiwa',
         'satuan',
@@ -37,6 +38,11 @@ class Muzakki extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+ 
+    public function createdByUser()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
 }  

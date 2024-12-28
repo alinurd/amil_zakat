@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Muzakki;
+use App\Models\User;
 use App\Models\Mustahik;
 use App\Models\Rw;
 use App\Models\MuzakkiHeader;
 
 class HomeController extends Controller
 {
-    /*
+    /* 
      * Dashboard Pages Routs
      */
     public function index(Request $request)
@@ -53,9 +54,29 @@ class HomeController extends Controller
         
         $totalSaldoBerasKg = $totalBerasMuzakkiKg - $totalBerasMustahikKg;
         $totalSaldoBerasL = $totalBerasMuzakkiL - $totalBerasMustahikL;
-     
+
+        // Mengambil data berdasarkan created_by dan mengelompokkan
+        $createdByData = Muzakki::with('createdByUser')->get()->groupBy('created_by')->map(function ($group) {
+            $user = $group->first()->createdByUser;
+            $totalUang = $group->whereIn('type', ['Uang', 'Transfer'])->sum('jumlah_bayar');
+            $totalBerasKg = $group->where('type', 'Beras')->where('satuan', 'Kg')->sum(function ($item) {
+                return (float) str_replace(',', '.', $item->jumlah_bayar);
+            });
+            $totalBerasLiter = $group->where('type', 'Beras')->where('satuan', 'Liter')->sum(function ($item) {
+                return (float) str_replace(',', '.', $item->jumlah_bayar);
+            });
+
+            return [
+                'user' => $user ? $user->nama_lengkap : 'Tidak Diketahui',
+                'total_uang' => $totalUang,
+                'total_beras_kg' => $totalBerasKg,
+                'total_beras_liter' => $totalBerasLiter,
+            ];
+        });
+      
         $assets = ['chart', 'animation'];
-        return view('dashboards.dashboard', compact('assets', 'Transactionsmuzakki', 'Transactionsmustahik', 'totalSaldoUang', 'totalSaldoBerasKg','totalSaldoBerasL', 'TransactionsmuzakkiH'));
+        return view('dashboards.dashboard', compact('assets', 'Transactionsmuzakki', 'Transactionsmustahik', 'totalSaldoUang', 
+        'totalSaldoBerasKg','totalSaldoBerasL', 'TransactionsmuzakkiH', 'createdByData'));
     }
 
     /* 

@@ -81,7 +81,6 @@ class MuzakkiController extends Controller
         return view('muzakki.form', compact('agt', 'ktg'));
     }
 
-
     public function editmuzzaki($code)
     {
         $agt = User::where("user_type", "pemberi")->where("status", "active")->get()->pluck('nama_lengkap', 'id');
@@ -92,6 +91,7 @@ class MuzakkiController extends Controller
 
         return view('muzakki.formedit', compact('agt', 'ktg','old'));
     }
+    
     public function store(Request $request)
     {
         
@@ -164,7 +164,7 @@ class MuzakkiController extends Controller
     }
 
    public function update(Request $request)
-{
+   {
     // Log awal untuk debugging
     \Log::info('Memulai proses update dengan data request:', $request->all());
 
@@ -251,6 +251,7 @@ class MuzakkiController extends Controller
         return view('muzakki.print', compact('data'));
         // return view('invoice', compact('data'));
     }
+
     public function cetakinvoices($code)
     {
         $detail = Muzakki::where('code', $code)->with('user', 'kategori')->get();
@@ -258,7 +259,7 @@ class MuzakkiController extends Controller
         // return view('muzakki.print', compact('data'));
         return view('invoice', compact('header', 'detail'));
     }
-
+ 
     public function cetakinvoice($code)
     {
         $detail = Muzakki::where('code', $code)->with('user', 'kategori')->get();
@@ -275,12 +276,12 @@ class MuzakkiController extends Controller
         return $pdf->stream('invoice_' . $code . '.pdf');
     }
 
-
     public function muzakkiCreate()
     {
         $view = view('muzakki.form-user')->render();
         return response()->json(['data' =>  $view, 'status' => true]);
     }
+
     public function muzakkiUserStore(Request $request)
     {
         $request['user_type'] = "pemberi";
@@ -309,7 +310,7 @@ class MuzakkiController extends Controller
 
         // return view('muzakki.form', compact('agt'));
     }
-
+ 
     public function destroy($code)
     {
         // dd($id);
