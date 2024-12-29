@@ -94,7 +94,6 @@ class MuzakkiController extends Controller
     
     public function store(Request $request)
     {
-        
         $validatedData = $request->validate([
             'dibayarkan' => 'required',
             'user' => 'required|array',
@@ -104,8 +103,8 @@ class MuzakkiController extends Controller
             'type' => 'required|array',
             'satuan' => 'required|array',
             'jumlah' => 'required|array',
-
-        ]);
+            'created_by' => 'required|array',
+        ]); 
 
         $lastId = MuzakkiHeader::orderByDesc('id')->first();
         $x = $lastId ? $lastId->id : 0;
@@ -113,7 +112,9 @@ class MuzakkiController extends Controller
         $MuzakkiHeader = MuzakkiHeader::create([
             'user_id' => $validatedData['dibayarkan'],
             'code' => $this->generateCodeById("MZK", $x + 1),
+            'created_by' => Auth::user()->role, // Tambahkan nilai created_by dari user yang login
         ]);
+
         foreach ($validatedData['user'] as $key => $user) {
             $muzakki = Muzakki::create([
                 'code' => $MuzakkiHeader->code,
@@ -123,10 +124,12 @@ class MuzakkiController extends Controller
                 'kategori_id' => $validatedData['kategori'][$key],
                 'type' => $validatedData['type'][$key],
                 'satuan' => $validatedData['satuan'][$key],
+                'created_by' => $validatedData['created_by'][$key], // Tambahkan ini
             ]);
 
             $useHis = User::where('id', $user)->first();
             $kategHis = kategori::where('id', $validatedData['kategori'][$key])->first();
+
             $history = new TransHistory();
             $history->muzakki_id = $muzakki->id;
             $history->code = $MuzakkiHeader->code;

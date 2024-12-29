@@ -64,7 +64,8 @@
                               <td>
 
                               <input type="number" name="jumlah_jiwa[]" id="jumlah_jiwa0" class="form-control">
-
+                              <input type="text" name="created_by[]" id="created_by0" value="{{ Auth::user()->role }}" class="form-control">
+ 
                               </td>
                               <td>
                                              <div class="form-check">
