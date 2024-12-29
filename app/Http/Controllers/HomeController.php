@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Mustahik;
 use App\Models\Rw;
 use App\Models\MuzakkiHeader;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -56,28 +57,62 @@ class HomeController extends Controller
         $totalSaldoBerasL = $totalBerasMuzakkiL - $totalBerasMustahikL;
 
         // Mengambil data berdasarkan created_by dan mengelompokkan
-        $createdByData = Muzakki::with('createdByUser')->get()->groupBy('created_by')->map(function ($group) {
-            $user = $group->first()->createdByUser;
-            $totalUang = $group->whereIn('type', ['Uang', 'Transfer'])->sum('jumlah_bayar');
-            $totalBerasKg = $group->where('type', 'Beras')->where('satuan', 'Kg')->sum(function ($item) {
-                return (float) str_replace(',', '.', $item->jumlah_bayar);
-            });
-            $totalBerasLiter = $group->where('type', 'Beras')->where('satuan', 'Liter')->sum(function ($item) {
-                return (float) str_replace(',', '.', $item->jumlah_bayar);
-            });
+        // Ambil ID pengguna yang login 
+        $userId = Auth::user()->id;
 
-            return [
-                'user' => $user ? $user->nama_lengkap : 'Tidak Diketahui',
-                'total_uang' => $totalUang,
-                'total_beras_kg' => $totalBerasKg,
-                'total_beras_liter' => $totalBerasLiter,
-            ];
-        });
+        // Menghitung jumlah transaksi muzakki berdasarkan created_by
+        $TransactionsmuzakkiByUser = Muzakki::where('created_by', $userId)->count();
+
+        // Hitung total pemasukan untuk setiap kategori
+        $totalPemasukanFitrahByUser = Muzakki::where('created_by', $userId)
+        ->where('kategori_id', 1)
+        ->sum('jumlah_bayar');
+
+        $totalPemasukanMaalByUser = Muzakki::where('created_by', $userId)
+        ->where('kategori_id', 2)
+        ->sum('jumlah_bayar');
+
+        $totalPemasukanFidyahByUser = Muzakki::where('created_by', $userId)
+        ->where('kategori_id', 3)
+        ->sum('jumlah_bayar');
+
+        $totalPemasukanInfaqByUser = Muzakki::where('created_by', $userId)
+            ->where('kategori_id', 4)
+            ->sum('jumlah_bayar');
+
+        // Menghitung total beras masuk untuk kategori Fitrah (dalam kilogram dan liter)
+        $totalBerasMuzakkiKgFitrahByUser = Muzakki::where('created_by', $userId)
+            ->where('type', 'Beras')
+            ->where('satuan', 'Kg')
+            ->where('kategori_id', 1)
+            ->sum('jumlah_bayar');
+
+        $totalBerasMuzakkiLFitrahByUser = Muzakki::where('created_by', $userId)
+            ->where('type', 'Beras')
+            ->where('satuan', 'Liter')
+            ->where('kategori_id', 1)
+            ->sum('jumlah_bayar');
+
+        // Menghitung total beras masuk untuk kategori Fidyah (dalam kilogram dan liter)
+        $totalBerasMuzakkiKgFidyahByUser = Muzakki::where('created_by', $userId)
+            ->where('type', 'Beras')
+            ->where('satuan', 'Kg')
+            ->where('kategori_id', 3)
+            ->sum('jumlah_bayar');
+        
+        $totalBerasMuzakkiLFidyahByUser = Muzakki::where('created_by', $userId)
+            ->where('type', 'Beras')
+            ->where('satuan', 'Liter')
+            ->where('kategori_id', 3)
+            ->sum('jumlah_bayar');
+
       
         $assets = ['chart', 'animation'];
         return view('dashboards.dashboard', compact('assets', 'Transactionsmuzakki', 'Transactionsmustahik', 'totalSaldoUang', 
-        'totalSaldoBerasKg','totalSaldoBerasL', 'TransactionsmuzakkiH', 'createdByData'));
-    }
+        'totalSaldoBerasKg','totalSaldoBerasL', 'TransactionsmuzakkiH','totalPemasukanFitrahByUser','totalPemasukanMaalByUser',
+        'totalPemasukanFidyahByUser','totalPemasukanInfaqByUser','totalBerasMuzakkiKgFitrahByUser','totalBerasMuzakkiLFitrahByUser',
+        'totalBerasMuzakkiKgFidyahByUser','totalBerasMuzakkiLFidyahByUser'));
+    } 
 
     /* 
      * Menu Style Routs

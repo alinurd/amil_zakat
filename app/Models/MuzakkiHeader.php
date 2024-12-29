@@ -18,6 +18,7 @@ class MuzakkiHeader extends Model
     protected $fillable = [
         'user_id',
         'code',
+        'created_by', // Tambahkan ini
     ];
 
     public function user() 

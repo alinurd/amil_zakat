@@ -1,5 +1,5 @@
 <x-app-layout :assets="$assets ?? []">
-   <div class="row" >
+   <div class="row">
       <div class="col-md-12 col-lg-12">
          <div class="row row-cols-1">
             <div class="d-slider1 overflow-hidden ">
@@ -74,30 +74,62 @@
             </div>
          </div>
 
-         <div class="row row-cols-1">
-            <div class="d-slider1 overflow-hidden">
-               <ul class="swiper-wrapper list-inline m-0 p-0 mb-2">
-                     @foreach ($createdByData as $data)
-                        <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="700">
-                           <div class="card-body">
-                                 <div class="progress-widget">                                    
-                                    <div class="progress-detail">
-                                       <strong class="text-black">Pendapatan Petugas Zakat <span class="text-primary">Muzakki:</span></strong> {{ $data['user'] }} <br><br>
-                                       <span class="text-primary" style="font-size: 16px;">Uang:</span> Rp{{ number_format($data['total_uang'], 2) }} <br>
-                                       <span class="text-primary" style="font-size: 16px;">Beras (Kg):</span> {{ number_format($data['total_beras_kg'], 2) }} Kg <br>
-                                       <span class="text-primary" style="font-size: 16px;">Beras (Liter):</span> {{ number_format($data['total_beras_liter'], 2) }} Liter
-                                    </div>
-                                 </div>
-                           </div>
-                        </li>
-                     @endforeach
-               </ul>
-               <div class="swiper-button swiper-button-next"></div>
-               <div class="swiper-button swiper-button-prev"></div>
-            </div>
-         </div>
-      </div>
+         @if(Auth::check() && Auth::user()->role != 3)
 
+            <div class="row row-cols-1">
+            <div class="col-md-12 col-lg-12 pb-4">
+                <div class="d-slider1 overflow-hidden bg-white p-3">
+                    <h6 style="margin-left: 2px; margin-bottom: 4%;">Pendapatan Tugas Zakat Saya</h6>
+                    <ul class="swiper-wrapper list-inline m-0 p-0 mb-2 card-slide">
+                    <li class="swiper-slide card card-slide">
+                        <div class="card-body">
+                            <div class="progress-widget">
+                                <div class="progress-detail">
+                                <p class="mb-4 text-primary" style="font-size: 17px;">Fitrah</p>
+                                 <h6 class="counter">Uang: Rp{{ number_format($totalPemasukanFitrahByUser, 0) }}.-</h6>
+                                 <h6 class="counter">Beras: {{ number_format($totalBerasMuzakkiLFitrahByUser, 0) }} Kg &amp; {{ number_format($totalBerasMuzakkiKgFitrahByUser, 1) }} Liter</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="swiper-slide card card-slide">
+                        <div class="card-body">
+                            <div class="progress-widget">
+                                <div class="progress-detail">
+                                <p class="mb-4 text-primary" style="font-size: 17px;">Fidyah</p>
+                                <h6 class="counter">Uang: Rp{{ number_format($totalPemasukanFidyahByUser, 0) }}.-</h6>
+                                <h6 class="counter">Beras: {{ number_format($totalBerasMuzakkiKgFidyahByUser, 0) }} Kg &amp; {{ number_format($totalBerasMuzakkiLFidyahByUser, 1) }} Liter</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="swiper-slide card card-slide">
+                        <div class="card-body">
+                            <div class="progress-widget">
+                                <div class="progress-detail">
+                                <p class="mb-4 text-primary" style="font-size: 17px;">Maal</p>
+                                 <h6 class="counter">Uang: Rp{{ number_format($totalPemasukanMaalByUser, 0) }}.-</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="swiper-slide card card-slide">
+                        <div class="card-body">
+                            <div class="progress-widget">
+                                <div class="progress-detail">
+                                <p class="mb-4 text-primary" style="font-size: 17px;">Infaq</p>
+                                 <h6 class="counter">Uang: Rp{{ number_format($totalPemasukanInfaqByUser, 0) }}.-</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    </ul>
+                    <div class="swiper-button swiper-button-next mt-5"></div>
+                    <div class="swiper-button swiper-button-prev mt-5"></div>
+                </div>
+            </div>
+            </div>
+         @endif
 
       <div class="alert alert-bottom alert-warning alert-dismissible fade show" id="card-body" style="display: none;" role="alert">
       <div class="card-body"> 
