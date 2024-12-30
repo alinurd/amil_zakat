@@ -64,6 +64,7 @@
                               <td>
 
                               <input type="number" name="jumlah_jiwa[]" id="jumlah_jiwa{{ $index }}" class="form-control" value="{{ $detail->jumlah_jiwa }}">
+                              <input type="hidden" name="created_by[]" id="created_by0" value="{{ Auth::user()->id }}" class="form-control">
 
                               </td>
                               <td>
