@@ -1,5 +1,4 @@
-<?php
-
+<?php 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,9 +18,21 @@ class MuzakkiHeader extends Model
     protected $fillable = [
         'user_id',
         'code',
+        'created_by', // Tambahkan ini
     ];
-    public function user()
+
+    public function user() 
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-}  
+
+    /**
+     * Define a one-to-many relationship with MuzakkiDetal.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function details()
+    {
+        return $this->hasMany(Muzakki::class, 'code', 'code');
+    }
+}

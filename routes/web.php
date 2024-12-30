@@ -76,7 +76,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Dashboard Routes
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
     
-    // Users Module 
+    // Users Module  
     Route::resource('users', UserController::class);   
     Route::resource('kategori', KategoriController::class); 
     
@@ -90,7 +90,8 @@ Route::group(['middleware' => 'auth'], function () {
         
     // Route::get('report/muzakkireport', [MuzakkiReport::class, 'muzakkireport'])->name('muzakkireport');
     Route::get('export-muzakki-report', [MuzakkiReport::class, 'exportMuzakkiReport'])->name('muzakkireport');
-    Route::get('report/muzakki', [MuzakkiReport::class, 'index'])->name('muzakkireport.index');
+    
+    Route::get('report/muzakki', [MuzakkiReport::class, 'index'])->name('muzakkireport.index');  
     Route::resource('muzakki', MuzakkiController::class);  
     // Route::get('/export-muzakki-report', [MuzakkiReport::class, 'exportMuzakkiReport']);
     Route::delete('muzakki/destroy/{code}', [MuzakkiController::class, 'destroy'])->name('muzakki.destroy');

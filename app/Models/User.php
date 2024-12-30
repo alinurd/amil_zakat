@@ -61,5 +61,10 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
 
     public function userProfile() {
         return $this->hasOne(UserProfile::class, 'user_id', 'id');
+    } 
+
+    public function muzakkiCreatedBy()
+    {
+        return $this->hasMany(Muzakki::class, 'created_by');
     }
 }

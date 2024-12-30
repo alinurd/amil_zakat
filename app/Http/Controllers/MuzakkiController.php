@@ -81,7 +81,6 @@ class MuzakkiController extends Controller
         return view('muzakki.form', compact('agt', 'ktg'));
     }
 
-
     public function editmuzzaki($code)
     {
         $agt = User::where("user_type", "pemberi")->where("status", "active")->get()->pluck('nama_lengkap', 'id');
@@ -92,9 +91,9 @@ class MuzakkiController extends Controller
 
         return view('muzakki.formedit', compact('agt', 'ktg','old'));
     }
+    
     public function store(Request $request)
     {
-        
         $validatedData = $request->validate([
             'dibayarkan' => 'required',
             'user' => 'required|array',
@@ -104,8 +103,8 @@ class MuzakkiController extends Controller
             'type' => 'required|array',
             'satuan' => 'required|array',
             'jumlah' => 'required|array',
-
-        ]);
+            'created_by' => 'required|array',
+        ]); 
 
         $lastId = MuzakkiHeader::orderByDesc('id')->first();
         $x = $lastId ? $lastId->id : 0;
@@ -113,7 +112,9 @@ class MuzakkiController extends Controller
         $MuzakkiHeader = MuzakkiHeader::create([
             'user_id' => $validatedData['dibayarkan'],
             'code' => $this->generateCodeById("MZK", $x + 1),
+            'created_by' => Auth::user()->role, // Tambahkan nilai created_by dari user yang login
         ]);
+
         foreach ($validatedData['user'] as $key => $user) {
             $muzakki = Muzakki::create([
                 'code' => $MuzakkiHeader->code,
@@ -123,10 +124,12 @@ class MuzakkiController extends Controller
                 'kategori_id' => $validatedData['kategori'][$key],
                 'type' => $validatedData['type'][$key],
                 'satuan' => $validatedData['satuan'][$key],
+                'created_by' => $validatedData['created_by'][$key], // Tambahkan ini
             ]);
 
             $useHis = User::where('id', $user)->first();
             $kategHis = kategori::where('id', $validatedData['kategori'][$key])->first();
+
             $history = new TransHistory();
             $history->muzakki_id = $muzakki->id;
             $history->code = $MuzakkiHeader->code;
@@ -164,7 +167,7 @@ class MuzakkiController extends Controller
     }
 
    public function update(Request $request)
-{
+   {
     // Log awal untuk debugging
     \Log::info('Memulai proses update dengan data request:', $request->all());
 
@@ -251,6 +254,7 @@ class MuzakkiController extends Controller
         return view('muzakki.print', compact('data'));
         // return view('invoice', compact('data'));
     }
+
     public function cetakinvoices($code)
     {
         $detail = Muzakki::where('code', $code)->with('user', 'kategori')->get();
@@ -258,7 +262,7 @@ class MuzakkiController extends Controller
         // return view('muzakki.print', compact('data'));
         return view('invoice', compact('header', 'detail'));
     }
-
+ 
     public function cetakinvoice($code)
     {
         $detail = Muzakki::where('code', $code)->with('user', 'kategori')->get();
@@ -275,12 +279,12 @@ class MuzakkiController extends Controller
         return $pdf->stream('invoice_' . $code . '.pdf');
     }
 
-
     public function muzakkiCreate()
     {
         $view = view('muzakki.form-user')->render();
         return response()->json(['data' =>  $view, 'status' => true]);
     }
+
     public function muzakkiUserStore(Request $request)
     {
         $request['user_type'] = "pemberi";
@@ -309,7 +313,7 @@ class MuzakkiController extends Controller
 
         // return view('muzakki.form', compact('agt'));
     }
-
+ 
     public function destroy($code)
     {
         // dd($id);
