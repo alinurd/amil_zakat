@@ -112,7 +112,7 @@ class MuzakkiController extends Controller
         $MuzakkiHeader = MuzakkiHeader::create([
             'user_id' => $validatedData['dibayarkan'],
             'code' => $this->generateCodeById("MZK", $x + 1),
-            'created_by' => Auth::user()->role, // Tambahkan nilai created_by dari user yang login
+            'created_by' => Auth::user()->id, // Tambahkan nilai created_by dari user yang login
         ]);
 
         foreach ($validatedData['user'] as $key => $user) {
@@ -159,7 +159,7 @@ class MuzakkiController extends Controller
 
         $this->sendMassage1($no, $msg, $MuzakkiHeader->code);
         //  $this->sendMassage($no,$msg);
-        //  $this->sendWa($no,$n);
+        //  $this->sendWa($no,$n); 
 
         $key = 'b42be3006183b810feb31c0cc4162822-997e6839-9163-4293-b012-8e9834e6264f';
         $base_url = 'qymz4m.api.infobip.com';
@@ -168,30 +168,30 @@ class MuzakkiController extends Controller
 
    public function update(Request $request)
    {
-    // Log awal untuk debugging
-    \Log::info('Memulai proses update dengan data request:', $request->all());
+        // Log awal untuk debugging
+        \Log::info('Memulai proses update dengan data request:', $request->all());
 
-    try {
-        // Validasi data
-        $validatedData = $request->validate([
-            'dibayarkan' => 'required',
-            'user' => 'required|array',
-            'user.*' => 'exists:users,id',
-            'kategori' => 'required|array',
-            'kategori.*' => 'exists:kategori,id',
-            'type' => 'required|array',
-            'satuan' => 'required|array',
-            'jumlah' => 'required|array',
-            'jumlah_jiwa' => 'required|array',
-        ]);
+        try {
+            // Validasi data
+            $validatedData = $request->validate([
+                'dibayarkan' => 'required',
+                'user' => 'required|array',
+                'user.*' => 'exists:users,id',
+                'kategori' => 'required|array',
+                'kategori.*' => 'exists:kategori,id',
+                'type' => 'required|array',
+                'satuan' => 'required|array',
+                'jumlah' => 'required|array',
+                'jumlah_jiwa' => 'required|array',
+            ]);
 
         // Update MuzakkiHeader
         MuzakkiHeader::withoutTimestamps(function () use ($request, $validatedData) {
             MuzakkiHeader::where('code', $request->code)->update([
                 'user_id' => $validatedData['dibayarkan'],
+                'created_by' => Auth::user()->id, // Tambahkan created_by
             ]);
         });
-        
 
         // Loop melalui data yang diberikan
         foreach ($validatedData['user'] as $key => $user) {
@@ -205,6 +205,7 @@ class MuzakkiController extends Controller
                     'kategori_id' => $validatedData['kategori'][$key],
                     'type' => $validatedData['type'][$key],
                     'satuan' => $validatedData['satuan'][$key],
+                    'created_by' => Auth::user()->id, // Tambahkan created_by untuk data baru
                 ]);
         
                 if (!$muzakki->save()) {
@@ -228,7 +229,8 @@ class MuzakkiController extends Controller
                 $muzakki->kategori_id = $validatedData['kategori'][$key];
                 $muzakki->type = $validatedData['type'][$key];
                 $muzakki->satuan = $validatedData['satuan'][$key];
-        
+                $muzakki->created_by = Auth::user()->id; // Tambahkan created_by untuk data update
+
                 if (!$muzakki->save()) {
                     \Log::error('Gagal memperbarui Muzakki:', $muzakki->toArray());
                     throw new \Exception('Gagal memperbarui data Muzakki.');
@@ -243,7 +245,7 @@ class MuzakkiController extends Controller
         // Log kesalahan jika terjadi exception
         \Log::error('Error dalam proses update:', ['message' => $e->getMessage()]);
         return back()->withErrors(__('Terjadi kesalahan saat memperbarui data: ') . $e->getMessage());
-    }
+    } 
 }
     
 
