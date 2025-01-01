@@ -75,15 +75,51 @@
          </div>
 
          @if(Auth::check() && Auth::user()->role != 3)
+            <div class="col-md-12">
+               <div class="card"> 
+                  <div class="card-body">
+                     <form class="form-horizontal d-flex align-items-center" method="GET" action="{{ route('dashboard') }}">
+                        <label class="control-label mb-0 me-2">Dari:</label> 
+                        <div class="me-3">
+                           <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-control">
+                        </div>
+                        <label class="control-label mb-0 me-2">Sampai:</label>   
+                        <div class="me-3">
+                           <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-danger">Cari</button>
+                     </form>
+                  </div>
+               </div> 
+            </div>
 
-            <div class="row row-cols-1">
-            <div class="col-md-12 col-lg-12 pb-4">
+            <div class="row row-cols-1" style="margin-top: -2%;">
+            <div class="col-md-12 col-lg-12 pb-4"> 
                 <div class="d-slider1 overflow-hidden bg-white p-3">
-                    <h6 style="margin-left: 2px; margin-bottom: 4%;">Pendapatan Tugas Zakat Saya</h6>
+                     <div class="card-header d-flex justify-content-between pb-5">
+                        <div class="header-title">
+                           <h6 class="card-title">Pendapatan Tugas Zakat Saya</h6>
+                        </div>
+                           
+                        <div class="card-action">
+                        <a href="{{ route('muzakkibyuserreport', [
+                           'role' => Auth::user()->role,
+                           'created_by' => Auth::id(),
+                           'tanggal_mulai' => request('tanggal_mulai'),
+                           'tanggal_selesai' => request('tanggal_selesai')
+                        ]) }}">
+                           <span class="btn btn-sm btn-primary float-end" id="export">
+                           Export to Excel</span>
+                        </a>
+                        </div>
+                     </div> 
+                        <!-- <a href="{{ route('muzakkireport', ['tanggal' => request('tanggal')]) }}">
+                           <span class="btn btn-primary float-end" id="export">Export to Excel</span>
+                        </a>  -->
                     <ul class="swiper-wrapper list-inline m-0 p-0 mb-2 card-slide">
                     <li class="swiper-slide card card-slide">
                         <div class="card-body">
-                            <div class="progress-widget">
+                            <div class="progress-widget"> 
                                 <div class="progress-detail">
                                 <p class="mb-4 text-primary" style="font-size: 17px;">Fitrah</p>
                                  <h6 class="counter">Uang: Rp{{ number_format($totalPemasukanFitrahByUser, 0) }}.-</h6>
@@ -132,7 +168,7 @@
          @endif
 
       <div class="alert alert-bottom alert-warning alert-dismissible fade show" id="card-body" style="display: none;" role="alert">
-      <div class="card-body"> 
+      <div class="card-body">  
         <center>
             <strong>
                 <p class="mb-2">Masa Aktif Aplikasi Anda Akan Segera Berahir Pada <br><u><strong> 15 Februari 2025 00:00:00</strong></u> </p>

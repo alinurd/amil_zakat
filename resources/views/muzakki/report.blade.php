@@ -1,21 +1,19 @@
 <x-app-layout :assets="$assets ?? []">
    <div class="row">
-   <div class="col-md-12">
-        <div class="card">
+      <div class="col-md-12">
+         <div class="card">
             <div class="card-body">
                <div class="d-flex align-items-center justify-content-between flex-wrap">
-                  <form class="form-horizontal mt-1" method="GET" action="{{ route('muzakkireport.index') }}">
-                     <div class="form-group row">
-                        <label class="control-label col-sm-4 align-self-center mb-0">Tanggal:</label>
-                        <div class="col-sm-8">
+                     <form class="form-horizontal mt-1 d-flex align-items-center" method="GET" action="{{ route('muzakkireport.index') }}">
+                        <label class="control-label mb-0 me-2">Tanggal:</label>
+                        <div class="me-3">
                            <input type="date" name="tanggal" class="form-control" required>
                         </div>
-                     </div> 
-                     <button type="submit" class="btn btn-danger">Cari</button>
-                  </form>
+                        <button type="submit" class="btn btn-danger">Cari</button>
+                     </form>
                </div>
             </div>
-        </div> 
+         </div>
       </div>
   
       <div class="col-sm-12">
@@ -39,8 +37,8 @@
                <table id="user-list-table" class="table table-striped" role="grid" data-toggle="data-table">
                      <thead>
                         <tr>
-                            <th>No</th>
-                            <th>Code Invoice</th>
+                           <th>No</th>
+                           <th>Code Invoice</th>
                            <th>dibayarkan oleh</th>
                            <th>Nama</th>
                            <th>kategori</th>
@@ -55,8 +53,8 @@
                         @foreach($data['header'] as $header)
                         @if($header->code == $detail->code)
                          <tr>
-                            <td>{{ $no++ }}</td>
-                            <td>{{ $detail->code }}</td>
+                           <td>{{ $no++ }}</td>
+                           <td>{{ $detail->code }}</td>
                            <td>{{ $header->user->nama_lengkap }}</td>
                            <td>{{ $detail->user->nama_lengkap }}</td>
                            <td>{{ $detail->kategori->nama_kategori }}</td>

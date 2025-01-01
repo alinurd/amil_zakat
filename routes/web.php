@@ -86,13 +86,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('editmuzzaki/{code}', [MuzakkiController::class, 'editmuzzaki'])->name('editmuzzaki');
     Route::get('muzakkiCreate', [MuzakkiController::class, 'muzakkiCreate'])->name('muzakkiCreate');
     Route::post('muzakki/{muzakki}', [MuzakkiController::class, 'update'])->name('muzakki.update');
-    Route::resource('muzakki', MuzakkiController::class);  
+    Route::resource('muzakki', MuzakkiController::class);   
         
     // Route::get('report/muzakkireport', [MuzakkiReport::class, 'muzakkireport'])->name('muzakkireport');
     Route::get('export-muzakki-report', [MuzakkiReport::class, 'exportMuzakkiReport'])->name('muzakkireport');
     
     Route::get('report/muzakki', [MuzakkiReport::class, 'index'])->name('muzakkireport.index');  
-    Route::resource('muzakki', MuzakkiController::class);  
+    Route::resource('muzakki', MuzakkiController::class);   
+
+    Route::get('/export-muzakki', [MuzakkiReport::class, 'exportMuzakkiReportbyuser'])->name('muzakkibyuserreport');
+
     // Route::get('/export-muzakki-report', [MuzakkiReport::class, 'exportMuzakkiReport']);
     Route::delete('muzakki/destroy/{code}', [MuzakkiController::class, 'destroy'])->name('muzakki.destroy');
 

@@ -21,6 +21,11 @@ class MuzakkiHeader extends Model
         'created_by', // Tambahkan ini
     ];
 
+    public function createdByUser()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
     public function user() 
     {
         return $this->belongsTo(User::class, 'user_id');

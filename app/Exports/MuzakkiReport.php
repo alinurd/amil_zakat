@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
+
 use Maatwebsite\Excel\Concerns\WithHeadings; 
 class MuzakkiReport implements FromCollection, WithHeadings, ShouldAutoSize{
     /*
@@ -159,6 +160,7 @@ class MuzakkiReport implements FromCollection, WithHeadings, ShouldAutoSize{
         // Filter berdasarkan tanggal jika dipilih
         if ($request->has('tanggal') && $request->tanggal) {
             $tanggal = $request->input('tanggal');
+
             $queryDetail->whereDate('created_at', $tanggal);
             $queryHeader->whereDate('created_at', $tanggal); // Pastikan ini sesuai dengan kolom yang relevan
         }
@@ -168,28 +170,37 @@ class MuzakkiReport implements FromCollection, WithHeadings, ShouldAutoSize{
 
         return view('muzakki.report', compact('data'));
     }
-
-    public function exportMuzakkiReport(Request $request) 
+ 
+    public function exportMuzakkiReportbyuser(Request $request) 
     {
-        $tanggal = $request->input('tanggal'); // Tangkap parameter tanggal
+        $tanggalMulai = $request->input('tanggal_mulai');
+        $tanggalSelesai = $request->input('tanggal_selesai');
+        $createdBy = $request->input('created_by'); // Filter berdasarkan user ID pembuat
         $thn = date('Y');
+    
+        // Set header untuk file Excel
         header("Content-type: application/vnd.ms-excel");
-        header("Content-Disposition: attachment; filename=Muzzaki-Report-{$thn}.xls");
-
-        // Filter data berdasarkan tanggal jika parameter 'tanggal' ada
+        header("Content-Disposition: attachment; filename=Muzakki-Report-{$thn}.xls");
+    
+        // Query data Muzakki dengan filter
         $queryDetail = Muzakki::with('user', 'kategori');
-        $queryHeader = MuzakkiHeader::with('user', 'details');
-
-        if ($tanggal) {
-            $queryDetail->whereDate('created_at', $tanggal);
-            $queryHeader->whereDate('created_at', $tanggal);
+        $queryHeader = MuzakkiHeader::with('user', 'details', 'createdByUser');
+    
+        if ($tanggalMulai && $tanggalSelesai) {
+            $queryDetail->whereBetween('created_at', [$tanggalMulai, $tanggalSelesai]);
+            $queryHeader->whereBetween('created_at', [$tanggalMulai, $tanggalSelesai]);
         }
-
+    
+        if ($createdBy) {
+            $queryDetail->where('created_by', $createdBy);
+            $queryHeader->where('created_by', $createdBy);
+        }
+    
         $data['detail'] = $queryDetail->get();
         $data['header'] = $queryHeader->get();
-
-        // Gunakan view untuk menghasilkan file Excel
-        return view('muzakki.report_baru', compact('data'));
-    } 
+    
+        // Return data ke view untuk di-export
+        return view('muzakki.report_byuser', compact('data'));
+    }    
 
 }
