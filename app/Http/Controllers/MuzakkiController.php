@@ -112,7 +112,7 @@ class MuzakkiController extends Controller
         $MuzakkiHeader = MuzakkiHeader::create([
             'user_id' => $validatedData['dibayarkan'],
             'code' => $this->generateCodeById("MZK", $x + 1),
-            'created_by' => Auth::user()->id, // Tambahkan nilai created_by dari user yang login
+            'created_by' => Auth::user()->role, // Tambahkan nilai created_by dari user yang login
         ]);
 
         foreach ($validatedData['user'] as $key => $user) {

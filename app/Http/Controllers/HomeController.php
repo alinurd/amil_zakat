@@ -9,8 +9,9 @@ use App\Models\Mustahik;
 use App\Models\Rw;
 use App\Models\MuzakkiHeader;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
-class HomeController extends Controller
+class HomeController extends Controller 
 {
     /* 
      * Dashboard Pages Routs
@@ -60,63 +61,92 @@ class HomeController extends Controller
         $totalSaldoBerasL = $totalBerasMuzakkiL - $totalBerasMustahikL;
 
         // Mengambil data berdasarkan created_by dan mengelompokkan
-        // Ambil ID pengguna yang login 
         $userId = Auth::user()->id; 
 
+        // Cek apakah ada filter tanggal dari request
+        $tanggalMulai = $request->input('tanggal_mulai');
+        $tanggalSelesai = $request->input('tanggal_selesai');
+
+        // Buat query dasar untuk data Muzakki
+        $queryMuzakki = Muzakki::where('created_by', $userId);
+
+        // Tambahkan filter berdasarkan tanggal
+        if ($tanggalMulai && $tanggalSelesai) {
+            if ($tanggalMulai === $tanggalSelesai) {
+                // Jika tanggal mulai dan akhir sama
+                $queryMuzakki->whereDate('created_at', $tanggalMulai);
+            } else {
+                // Jika tanggal mulai dan akhir berbeda
+                $queryMuzakki->whereBetween('created_at', [$tanggalMulai, $tanggalSelesai]);
+            }
+        }
+
         // Menghitung jumlah transaksi muzakki berdasarkan created_by
-        $TransactionsmuzakkiByUser = Muzakki::where('created_by', $userId)->count();
+        $TransactionsmuzakkiByUser = $queryMuzakki->count();
 
         // Hitung total pemasukan untuk setiap kategori dengan perkalian jumlah_bayar * jumlah_jiwa
         $totalPemasukanFitrahByUser = Muzakki::where('created_by', $userId)
-            ->where('kategori_id', 1)
-            ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
-            ->value('total');
+        ->when($tanggalMulai && $tanggalSelesai, function ($query) use ($tanggalMulai, $tanggalSelesai) {
+            return $query->whereBetween('created_at', [$tanggalMulai, $tanggalSelesai]);
+        })
+        ->where('kategori_id', 1)
+        ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
+        ->value('total');
 
         $totalPemasukanMaalByUser = Muzakki::where('created_by', $userId)
-            ->where('kategori_id', 2)
-            ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
-            ->value('total');
+        ->when($tanggalMulai && $tanggalSelesai, function ($query) use ($tanggalMulai, $tanggalSelesai) {
+            return $query->whereBetween('created_at', [$tanggalMulai, $tanggalSelesai]);
+        })
+        ->where('kategori_id', 2)
+        ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
+        ->value('total');
 
         $totalPemasukanFidyahByUser = Muzakki::where('created_by', $userId)
-            ->where('kategori_id', 3)
-            ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
-            ->value('total');
+        ->when($tanggalMulai && $tanggalSelesai, function ($query) use ($tanggalMulai, $tanggalSelesai) {
+            return $query->whereBetween('created_at', [$tanggalMulai, $tanggalSelesai]);
+        })
+        ->where('kategori_id', 3)
+        ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
+        ->value('total');
 
         $totalPemasukanInfaqByUser = Muzakki::where('created_by', $userId)
-            ->where('kategori_id', 4)
-            ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
-            ->value('total');
+        ->when($tanggalMulai && $tanggalSelesai, function ($query) use ($tanggalMulai, $tanggalSelesai) {
+            return $query->whereBetween('created_at', [$tanggalMulai, $tanggalSelesai]);
+        })
+        ->where('kategori_id', 4)
+        ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
+        ->value('total');
 
         // Menghitung total beras masuk untuk kategori Fitrah (dalam kilogram dan liter)
-        $totalBerasMuzakkiKgFitrahByUser = Muzakki::where('created_by', $userId)
-            ->where('type', 'Beras')
-            ->where('satuan', 'Kg')
-            ->where('kategori_id', 1)
-            ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
-            ->value('total');
+        $totalBerasMuzakkiKgFitrahByUser = $queryMuzakki->clone()
+        ->where('kategori_id', 1)
+        ->where('type', 'Beras')
+        ->where('satuan', 'Kg')
+        ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
+        ->value('total');
 
-        $totalBerasMuzakkiLFitrahByUser = Muzakki::where('created_by', $userId)
-            ->where('type', 'Beras')
-            ->where('satuan', 'Liter')
-            ->where('kategori_id', 1)
-            ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
-            ->value('total');
+        $totalBerasMuzakkiLFitrahByUser = $queryMuzakki->clone()  
+        ->where('kategori_id', 1)
+        ->where('type', 'Beras')
+        ->where('satuan', 'Liter')
+        ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
+        ->value('total');
 
         // Menghitung total beras masuk untuk kategori Fidyah (dalam kilogram dan liter)
-        $totalBerasMuzakkiKgFidyahByUser = Muzakki::where('created_by', $userId)
-            ->where('type', 'Beras')
-            ->where('satuan', 'Kg')
-            ->where('kategori_id', 3)
-            ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
-            ->value('total');
+        $totalBerasMuzakkiKgFidyahByUser = $queryMuzakki->clone()
+        ->where('kategori_id', 3)
+        ->where('type', 'Beras')
+        ->where('satuan', 'Kg')
+        ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
+        ->value('total');
 
-        $totalBerasMuzakkiLFidyahByUser = Muzakki::where('created_by', $userId)
-            ->where('type', 'Beras')
-            ->where('satuan', 'Liter')
-            ->where('kategori_id', 3)
-            ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
-            ->value('total');
-       
+        $totalBerasMuzakkiLFidyahByUser = $queryMuzakki->clone()
+        ->where('kategori_id', 3)
+        ->where('type', 'Beras')
+        ->where('satuan', 'Liter')
+        ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
+        ->value('total');
+            
         $assets = ['chart', 'animation'];
         return view('dashboards.dashboard', compact('assets', 'Transactionsmuzakki', 'Transactionsmustahik', 'totalSaldoUang', 
         'totalSaldoBerasKg','totalSaldoBerasL', 'TransactionsmuzakkiH','totalPemasukanFitrahByUser','totalPemasukanMaalByUser',
