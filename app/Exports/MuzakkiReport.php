@@ -165,7 +165,7 @@ class MuzakkiReport implements FromCollection, WithHeadings, ShouldAutoSize{
             $queryHeader->whereDate('created_at', $tanggal); // Pastikan ini sesuai dengan kolom yang relevan
         }
 
-        $data['detail'] = $queryDetail->get();
+        $data['detail'] = $queryDetail->get(); 
         $data['header'] = $queryHeader->get();
 
         return view('muzakki.report', compact('data'));
@@ -202,5 +202,18 @@ class MuzakkiReport implements FromCollection, WithHeadings, ShouldAutoSize{
         // Return data ke view untuk di-export
         return view('muzakki.report_byuser', compact('data'));
     }    
+
+    public function exportMuzakkiReport()
+    {
+        $thn=date('Y');
+        header("Content-type:appalication/vnd.ms-excel");
+        header("content-disposition:attachment;filename=Muzzaki-Report-".$thn.".xls");
+            
+        $data['detail'] = Muzakki::with('user', 'kategori')->get();
+        $data['header'] = MuzakkiHeader::with('user', 'details')->get();
+        
+        return view('muzakki.report_baru', compact('data'));
+    } 
+ 
 
 }
