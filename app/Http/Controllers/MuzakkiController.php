@@ -124,7 +124,7 @@ class MuzakkiController extends Controller
                 'kategori_id' => $validatedData['kategori'][$key],
                 'type' => $validatedData['type'][$key],
                 'satuan' => $validatedData['satuan'][$key],
-                'created_by' => $validatedData['created_by'][$key], // Tambahkan ini
+                'created_by' => Auth::user()->role, // Tambahkan nilai created_by dari user yang login
             ]);
 
             $useHis = User::where('id', $user)->first();
