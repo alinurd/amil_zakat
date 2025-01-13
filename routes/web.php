@@ -80,7 +80,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', UserController::class);   
     Route::resource('kategori', KategoriController::class); 
     
-    Route::get('invoice/{code}', [MuzakkiController::class, 'invoice'])->name('invoice');
+    Route::delete('/deleted/{id}', [MuzakkiController::class, 'deleted'])->name('deleted');
+        Route::get('invoice/{code}', [MuzakkiController::class, 'invoice'])->name('invoice');
     Route::post('muzakkiUserStore', [MuzakkiController::class, 'muzakkiUserStore'])->name('muzakkiUserStore');
     Route::get('cetakinvoice/{code}', [MuzakkiController::class, 'cetakinvoice'])->name('cetakinvoice');
     Route::get('editmuzzaki/{code}', [MuzakkiController::class, 'editmuzzaki'])->name('editmuzzaki');

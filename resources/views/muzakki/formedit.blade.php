@@ -9,7 +9,7 @@
       <div class="card">
          <div class="card-header d-flex justify-content-between">
             <div class="header-title">
-               <h4 class="card-title">{{$id !== null ? 'Update' : 'New' }} Muzakki</h4> 
+               <h4 class="card-title">{{$code !== null ? 'Update' : 'New' }} Muzakki</h4> 
             </div>
             <div class="card-action">
                <a href="#" class="mt-lg-0 mt-md-0 mt-3 btn btn-secondary btn-icon" data-bs-toggle="tooltip" data-modal-form="form" data-icon="person_add" data-size="small" data--href="{{ route('muzakkiCreate') }}" data-app-title="Add user muzakki" data-placement="top" title="New Muzakki">
@@ -92,12 +92,14 @@
                               <input type="text" name="jumlah[]" id="jumlah{{ $index }}" class="form-control" value="{{ $detail->jumlah_bayar }}">
                                </td>
                               <td>
+
                               <span id="subtotal{{ $index }}"> </span><input type="hidden" name="subtotal[]" id="subInt{{ $index }}">
                               <span id="subtotaltext{{ $index }}"> </span>
                            
-                               <!-- <td>
-                                <span class="btn btn-danger btn-sm" disabled>Hapus</span>
-                               </td> -->
+                            <span class="btn btn-danger btn-sm m-2"  onclick="deleteRow('{{$index }}', '{{$detail->id }}')">x</span>
+</span>
+
+                             
                            </tr>
                            @endforeach
 
@@ -131,7 +133,7 @@
                         </svg>
                     </span>&nbsp; &nbsp; 
                   </div>
-                  <button type="submit" class="btn btn-primary">{{$id !== null ? 'Update' : 'Add' }} Muzakki</button>
+                  <button type="submit" class="btn btn-primary">{{$code !== null ? 'Update' : 'Add' }} Muzakki</button>
                </div>
             </div>
          </div>
@@ -142,20 +144,46 @@
 </x-app-layout>
 <script>
 
- 
-function deleteRow(rowCount) {
- 
-    var row = document.querySelector('#muzakkiTable tbody tr:nth-child(' + (rowCount + 1) + ')');
-    if (row) {
-        row.remove();
+function deleteRow(rowCount, id = 0) {
+     if (id > 0) {
+        if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
+            fetch(`/deleted/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => {
+                console.log(response);
+                if (response.ok) {
+                    alert("data berhasil di hapus.");
+                    console.log("rowCount: " + (parseInt(rowCount) + 1));
+                    var row = document.querySelector('#muzakkiTable tbody tr:nth-child(' + (parseInt(rowCount) + 1) + ')');
+                    if (row) {
+                        row.remove();
+                    }
+                    calculateTotal();
+                } else {
+                    alert("Gagal menghapus data. Silakan coba lagi.");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    } else {
+        // Hapus baris tanpa permintaan ke server
+        var row = document.querySelector('#muzakkiTable tbody tr:nth-child(' + (parseInt(rowCount) + 1) + ')');
+        if (row) {
+            row.remove();
+        }
+        calculateTotal();
     }
- 
-    calculateTotal();
 }
+
+
  
 document.addEventListener('DOMContentLoaded', function() {
      document.querySelector('#deleteRow0').addEventListener('click', function() {
-        deleteRow(0); 
+        deleteRow(0, 0); 
     });
 });
 
@@ -202,12 +230,12 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (i == 6) {
                 newCell.innerHTML = '<input type="text" name="jumlah[]" id="jumlah' + rowCount + '" class="form-control">';
             } else if (i == 7) {
-                newCell.innerHTML = '<span id="subtotal' + rowCount + '"></span> <span id="subtotaltext' + rowCount + '"> </span><br><input type="hidden" name="subtotal[]" id="subInt' + rowCount + '" class="form-control">';        
+                newCell.innerHTML = '<span id="subtotal' + rowCount + '"></span> <span id="subtotaltext' + rowCount + '"> </span><input type="hidden" name="subtotal[]" id="subInt' + rowCount + '" class="form-control"><span class="btn btn-danger btn-sm m-2" id="deleteRow' + rowCount + '" onclick="deleteRow(' + rowCount + ')">x</span>';        
             
              }
-            //  else if (i == 8) {
-            //     newCell.innerHTML = '<span class="btn btn-danger btn-sm" id="deleteRow' + rowCount + '" onclick="deleteRow(' + rowCount + ')">Hapus</span>';            
-            // } 
+             else if (i == 8) {
+                 newCell.innerHTML = '<span class="btn btn-danger btn-sm" id="deleteRow' + rowCount + '" onclick="deleteRow(' + rowCount + ')">Hapus</span>';            
+              } 
             else if (i == 1) {
                 newCell.innerHTML = '{!! Form::select('user[]', $agt, "", ['class' => 'form-control']) !!}';
             }
