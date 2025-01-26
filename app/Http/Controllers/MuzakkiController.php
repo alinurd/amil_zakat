@@ -89,7 +89,7 @@ class MuzakkiController extends Controller
         $old['detail'] = Muzakki::where('code', $code)->with('user', 'kategori')->get();
         $old['header'] = MuzakkiHeader::where('code', $code)->with('user')->get();
 
-        return view('muzakki.formedit', compact('agt', 'ktg','old'));
+        return view('muzakki.formedit', compact('agt', 'ktg','old', 'code'));
     }
     
     public function store(Request $request)
@@ -170,7 +170,7 @@ class MuzakkiController extends Controller
    {
         // Log awal untuk debugging
         \Log::info('Memulai proses update dengan data request:', $request->all());
-
+// dd($request);
         try {
             // Validasi data
             $validatedData = $request->validate([
@@ -335,4 +335,19 @@ class MuzakkiController extends Controller
 
         return redirect()->back()->with($status, $message);
     }
+
+    public function deleted($id)
+{
+    try {
+        // Misalkan Anda menggunakan model Muzakki
+        $muzakki = Muzakki::findOrFail($id);
+        $muzakki->delete();
+
+        return response()->json(['sts'=>true,'message' => 'dat berhasil dihapus.'], 200);
+    } catch (\Exception $e) {
+        return response()->json(['sts'=>false,'message' => 'Gagal menghapus data.'], 500);
+    }
+}
+
+
 }
