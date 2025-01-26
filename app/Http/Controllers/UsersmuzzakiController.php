@@ -8,6 +8,7 @@ use App\Models\Kategori;
 use App\Helpers\AuthHelper;
 use Spatie\Permission\Models\Role;
 use App\Http\Requests\UserRequest;
+use App\Models\User;
 
 class UsersmuzzakiController extends Controller
 {
@@ -87,10 +88,10 @@ class UsersmuzzakiController extends Controller
     public function edit($id)
     {  
        // Find the category data by ID
-       $kategori = Kategori::findOrFail($id);
+       $user = User::findOrFail($id);
 
        // Pass the category data to the form view
-       return view('kategori.form_edit', compact('kategori'));
+       return view('users.form_edit_muzzaki', compact('user'));
     }
 
     /**
@@ -103,19 +104,20 @@ class UsersmuzzakiController extends Controller
     public function update(Request $request, $id)
     {
         // Temukan kategori yang akan diperbarui
-        $kategori = Kategori::findOrFail($id);
-
-        // Validasi input kategori jika diperlukan
+        $kategori = User::findOrFail($id);
+ 
         $request->validate([
-            'nama_kategori' => 'required|string|max:255', // Contoh aturan validasi untuk nama_kategori
+            'nama_lengkap' => 'required|string|max:255', // Contoh aturan validasi untuk nama_kategori
+            'jenis_kelamin' => 'required', // Contoh aturan validasi untuk nama_kategori
+            'nomor_telp' => 'required', // Contoh aturan validasi untuk nama_kategori
+            'alamat' => 'required', // Contoh aturan validasi untuk nama_kategori
             // Tambahkan aturan validasi lainnya jika diperlukan
         ]); 
-
         // Lakukan pemrosesan update kategori
         $kategori->update($request->all()); // Gunakan metode update() untuk melakukan pembaruan
 
         // Redirect ke halaman yang sesuai setelah update
-        return redirect()->route('kategori.index')->withSuccess(__('Kategori successfully updated.'));
+        return redirect()->route('usersmuzzaki.index')->withSuccess(__('usersmuzzaki successfully updated.'));
     }  
 
     /**
