@@ -393,29 +393,39 @@ jumlahElem0.addEventListener('input', function() {
 
         var tableBody = document.querySelector('#muzakkiTable tbody');
         var rows = tableBody.rows;
-        for (var i = 0; i < rows.length; i++) {
-            var satuanSelect = rows[i].querySelector('select[name="satuan[' + i + ']"]');
-            var jumlahInput = rows[i].querySelector('input[name="subtotal[]"]');
-             var type = satuanSelect.value;
-            var jumlah = parseFloat(jumlahInput.value.replace(',', '.')); // Replace koma dengan titik
- 
-            if (isNaN(jumlah)) {
-                jumlah = 0;
-            }
- 
+        var totalLiter = 0;
+var totalRupiah = 0;
+var totalKg = 0;
 
-            if (type === 'Liter') {
-                totalLiter += jumlah;
-            } else if (type === 'Rupiah') {
-                totalRupiah += jumlah;
-            } else if (type === 'Kg') {
-                totalKg += jumlah;
-            }
+for (var i = 0; i < rows.length; i++) {
+    var satuanSelect = rows[i].querySelector('select[name="satuan[' + i + ']"]');
+    var jumlahInput = rows[i].querySelector('input[name="subtotal[]"]');
+    var type = satuanSelect.value;
 
-         }
-console.log(totalLiter)
-console.log(totalKg)
-console.log(totalKg)
+    // Hilangkan separator ribuan (.) dan ubah koma desimal (,) menjadi titik (.)
+    var jumlahString = jumlahInput.value.replace(/\./g, '').replace(',', '.'); 
+    var jumlah = parseFloat(jumlahString); // Konversi string menjadi angka
+
+    if (isNaN(jumlah)) {
+        jumlah = 0; // Jika bukan angka, set ke 0
+    }
+
+    if (type === 'Liter') {
+        totalLiter += jumlah;
+    } else if (type === 'Rupiah') {
+        totalRupiah += jumlah; // Jumlahkan sebagai angka
+    } else if (type === 'Kg') {
+        totalKg += jumlah;
+    }
+}
+
+// alert('Total Liter: ' + totalLiter);
+// alert('Total Rupiah: ' + totalRupiah);
+// alert('Total Kg: ' + totalKg);
+
+// console.log(totalLiter)
+// console.log(totalKg)
+// console.log(totalKg)
         // Update total liter, total rupiah, total kg, dan total jiwa di tabel
         document.getElementById('ttlLiter').textContent = totalLiter.toLocaleString();
         document.getElementById('ttlKg').textContent = totalKg.toLocaleString();
