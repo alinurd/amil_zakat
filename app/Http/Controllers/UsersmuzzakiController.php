@@ -22,7 +22,7 @@ class UsersmuzzakiController extends Controller
         $pageTitle = trans('global-message.list_form_title',['form' => trans('User Muzzaki')] );
         $auth_user = AuthHelper::authSession();
         $assets = ['data-table'];
-        $headerAction = '<a href="'.route('usersmuzzaki.create').'" class="btn btn-sm btn-primary" role="button">Add User Muzzaki</a>';
+        $headerAction = '';
         return $dataTable->render('global.datatable', compact('pageTitle','auth_user','assets', 'headerAction'));
     }
 
