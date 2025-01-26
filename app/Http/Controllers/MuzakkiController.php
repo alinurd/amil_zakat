@@ -46,8 +46,8 @@ class MuzakkiController extends Controller
             <div class="form-group mb-0 mr-2">
                 <select name="year" id="year" class="form-control">
                     <option value="" disabled selected>Pilih Tahun</option>
-                    <option value="2025" ' . (request('year') == '2025' ? 'selected' : '') . '>2025</option>
-                    <option value="2026" ' . (request('year') == '2026' ? 'selected' : '') . '>2026</option>
+                    <option value="2024" ' . (request('year') == '2024' ? 'selected' : '') . '>2024</option>
+                    <option value="2025" ' . (request('year') == '2025' ? 'selected' : '') . '>2025</option> 
                 </select>
             </div>
             <button type="submit" class="btn btn-success">
