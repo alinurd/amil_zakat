@@ -12,7 +12,7 @@
                </div>
                <div class="card-action">
     <div class="d-flex justify-content-between align-items-center">
-       <!-- {!!$filter??''!!} -->
+       {!!$filter??''!!}
  
         <div>
             {!! $headerAction ?? '' !!}
