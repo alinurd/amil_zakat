@@ -118,33 +118,28 @@ class Controller extends BaseController
 
         // dd($resp);
     }
-    public function sendMassage($to, $msg)
+    public function getCredite()
     {
+        $BASE_URL = 'https://api.nusasms.com/nusasms_api/1.0/balance';
+        // For test
+        // $BASE_URL = 'https://dev.nusasms.com/nusasms_api/1.0/balance';
+        
         $curl = curl_init();
-
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://app.saungwa.com/api/create-message',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => array(
-                'appkey' => 'a7862033-3af9-47c6-8c85-16d6822b8cad',
-                'authkey' => 'CTak6Ul0XiukabnGasbqPCnVzzxs7ThcafHDJZf3S350f7k9Zy',
-                'to' => $to,
-                'message' => $msg,
-                'sandbox' => 'false'
+            CURLOPT_URL => $BASE_URL,
+            CURLOPT_HTTPHEADER => array(
+                "APIKey: 33DF7E9D96A13B5DB75FB01BAB6DE458",
+                'Accept: application/json',
+                'Content-Type: application/json'
             ),
+            CURLOPT_RETURNTRANSFER => 1,
+            // CURLOPT_SSL_VERIFYPEER => 0,    // Skip SSL Verification
         ));
+        
+        $resp = curl_exec($curl);
+return json_decode($resp, true);
 
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-        echo $response;
-    }
+     }
     
     protected function sendWax($no, $nama)
     {

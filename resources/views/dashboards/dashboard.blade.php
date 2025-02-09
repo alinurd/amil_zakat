@@ -75,23 +75,42 @@
          </div>
 
          @if(Auth::check() && Auth::user()->role != 3)
-            <div class="col-md-12">
-               <div class="card"> 
-                  <div class="card-body">
-                     <form class="form-horizontal d-flex align-items-center" method="GET" action="{{ route('dashboard') }}">
-                        <label class="control-label mb-0 me-2">Dari:</label> 
+         <div class="col-md-12">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <!-- Form Filter Tanggal -->
+                <div class="col-md-8">
+                    <form class="form-horizontal d-flex align-items-center flex-wrap" method="GET" action="{{ route('dashboard') }}">
+                        <label class="control-label mb-0 me-2">Dari:</label>
                         <div class="me-3">
-                           <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-control">
+                            <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-control"
+                                value="{{ request('tanggal_mulai') }}">
                         </div>
-                        <label class="control-label mb-0 me-2">Sampai:</label>   
+                        <label class="control-label mb-0 me-2">Sampai:</label>
                         <div class="me-3">
-                           <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-control">
+                            <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-control"
+                                value="{{ request('tanggal_selesai') }}">
                         </div>
                         <button type="submit" class="btn btn-danger">Cari</button>
-                     </form>
-                  </div>
-               </div> 
+                    </form>
+                </div>
+
+                 
+                <!-- Informasi Credite -->
+                <div class="col-md-4 d-flex align-items-center justify-content-end">
+                <span class="badge bg-success">
+                  <h5 class="text-white">
+                  credite: <strong>  {{ $credite['data']['wa_balance'] ?? '0' }} </strong>
+                     exp: <strong> {{ $credite['data']['wa_expired_date'] ?? '0' }}</strong> 
+                     </h5>
+                </span>
+                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
 
             <div class="row row-cols-1" style="margin-top: -2%;">
             <div class="col-md-12 col-lg-12 pb-4"> 

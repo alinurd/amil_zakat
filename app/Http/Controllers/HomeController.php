@@ -146,12 +146,12 @@ class HomeController extends Controller
         ->where('satuan', 'Liter')
         ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
         ->value('total');
-            
-        $assets = ['chart', 'animation'];
+        $credite=$this->getCredite();
+          $assets = ['chart', 'animation'];
         return view('dashboards.dashboard', compact('assets', 'Transactionsmuzakki', 'Transactionsmustahik', 'totalSaldoUang', 
         'totalSaldoBerasKg','totalSaldoBerasL', 'TransactionsmuzakkiH','totalPemasukanFitrahByUser','totalPemasukanMaalByUser',
         'totalPemasukanFidyahByUser','totalPemasukanInfaqByUser','totalBerasMuzakkiKgFitrahByUser','totalBerasMuzakkiLFitrahByUser',
-        'totalBerasMuzakkiKgFidyahByUser','totalBerasMuzakkiLFidyahByUser'));
+        'totalBerasMuzakkiKgFidyahByUser','totalBerasMuzakkiLFidyahByUser', 'credite'));
     } 
 
     /* 
