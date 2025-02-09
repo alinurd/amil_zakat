@@ -186,48 +186,25 @@
             </div>
          @endif
 
-      <div class="alert alert-bottom alert-warning alert-dismissible fade show" id="card-body" style="display: none;" role="alert">
+      <div class="alert alert-bottom alert-info alert-dismissible fade show" id="card-body" style="display: none;" role="alert">
       <div class="card-body">  
         <center>
             <strong>
-                <p class="mb-2">Masa Aktif Aplikasi Anda Akan Segera Berahir Pada <br><u><strong> 15 Februari 2025 00:00:00</strong></u> </p>
-                <small class="text-muted">Pastikan anda sudah membackup semua data & segera lakukan aktivasi </small>
+                <p class="mb-2">Masa Aktif Aplikasi Anda Akan Segera Berahir Pada <br><u><strong> 11 Maret 2025 00:00:00</strong></u> </p>
+                <!-- <small class="text-muted">Pastikan anda sudah membackup semua data & segera lakukan aktivasi </small> -->
                 <div class="card">
                     <div class="card-body">
-                        <span id="countdown" style="color:red"></span>
+                        <span id="countdown" style="color:warning"></span>
                     </div>
                 </div>
             </strong>
-            <div class="bd-example table-responsive d-none">
-                <table class="table table-sm table-bordered">
-                    <tr>
-                        <td width="60px">Domain</td>
-                        <td  width="5px">:</td>
-                        <td>https://www.zis-alhasanah.com</td>
-                    </tr>
-                    <tr>
-                        <td width="50px">Mulai</td>
-                        <td  width="5px">:</td>
-                        <td>2025-03-11</td>
-                    </tr>
-                    <tr>
-                        <td width="60px">Berakhir</td>
-                        <td  width="5px">:</td>
-                        <td>2025-03-11</td>
-                    </tr>
-                    <tr>
-                        <td width="60px">Periode Tagihan</td>
-                        <td  width="5px">:</td>
-                        <td>Tahunan (Bayar Setiap 12 Bulan)</td>
-                    </tr>
-                </table>
-            </div>
+             
         </center>
     </div>
     <script>
         // Fungsi untuk hitung mundur
         function updateCountdown() {
-            const targetDate = new Date('feb 15, 2025 00:00:00').getTime();
+            const targetDate = new Date('mart 11, 2026 00:00:00').getTime();
             const now = new Date().getTime();
             const distance = targetDate - now;
 
