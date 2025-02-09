@@ -150,11 +150,13 @@ class MuzakkiController extends Controller
         }
         
         $dibayarkan = User::where('id', $validatedData['dibayarkan'])->first();
-        //  $no = '6289528518495'; 
+         //$no = '6285817069096'; 
         $no = $dibayarkan->nomor_telp;  
         $msg = "Alhamdulillah, telah diterima penunaikan zis/fidyah dari Bapak/ibu: " . $dibayarkan->nama_lengkap . ".\n";
         $msg .= "No. Invoice: #" . $MuzakkiHeader->code . "\n\n\n ";
         $msg .= "Lihat detail: https://zis-alhasanah.com/showinvoice/" . $MuzakkiHeader->code;
+        
+        $msg .= "=== INI ADALAH TESTING ===";
         $this->cetakinvoice($MuzakkiHeader->code);
 
         $this->sendMassage1($no, $msg, $MuzakkiHeader->code);

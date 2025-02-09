@@ -14,6 +14,7 @@ use App\Http\Controllers\Security\RoleController;
 use App\Http\Controllers\Security\PermissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\UsersmuzzakiController;
 use App\Http\Controllers\MuzakkiController;
 use App\Http\Controllers\MustahikController; 
 use App\Http\Controllers\MustahikuserController; 
@@ -79,6 +80,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Users Module  
     Route::resource('users', UserController::class);   
     Route::resource('kategori', KategoriController::class); 
+    Route::resource('usersmuzzaki', UsersmuzzakiController::class); 
     
     Route::delete('/deleted/{id}', [MuzakkiController::class, 'deleted'])->name('deleted');
         Route::get('invoice/{code}', [MuzakkiController::class, 'invoice'])->name('invoice');

@@ -54,9 +54,9 @@ class Controller extends BaseController
             'caption' => $msg,
             // 'queue' => 'YOUR_QUEUE',
             'destination' => $to,
-            'media_url' => 'https://zis-alhasanah.com/public/invoice/invoice_'.$code.'.pdf',
-            // 'media_url' => 'http://127.0.0.1:8000/public/images/icons/invoice-6.pdf',
-            // 'message' => 'Alhamdulillah, telah diterima penunaikan zis/fidyah dari Bapak/ibu:'.$from,
+           'media_url' => 'https://development.zis-alhasanah.com/public/invoice/invoice_'.$code.'.pdf',
+            //'media_url' => 'http://127.0.0.1:8000/public/images/icons/invoice-6.pdf',
+            'message' => 'Alhamdulillah, telah diterima penunaikan zis/fidyah dari Bapak/ibu:',
             'include_unsubscribe' => false,
         ]);
 
@@ -80,8 +80,7 @@ class Controller extends BaseController
         }
 
         curl_close($curl);
-
-        // dd($resp);
+ 
     }
     public function sendMassage2($to, $msg, $code)
     {
