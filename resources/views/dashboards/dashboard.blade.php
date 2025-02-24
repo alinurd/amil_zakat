@@ -190,7 +190,7 @@
       <div class="card-body">  
         <center>
             <strong>
-                <p class="mb-2">Masa Aktif Aplikasi Anda Akan Segera Berahir Pada <br><u><strong> 11 Maret 2025 00:00:00</strong></u> </p>
+                <p class="mb-2">Masa Aktif Aplikasi Anda  Berahir Pada <br><u><strong> 11 Maret 2026 00:00:00</strong></u> </p>
                 <!-- <small class="text-muted">Pastikan anda sudah membackup semua data & segera lakukan aktivasi </small> -->
                 <div class="card">
                     <div class="card-body">
