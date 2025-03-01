@@ -445,6 +445,19 @@
         const chart = new ApexCharts(document.querySelector("#extrachart"), options);
         chart.render();
     }); 
+
+
+    document.getElementById('year').addEventListener('change', function() {
+    var selectedYear = this.value;
+    var currentDomain = window.location.hostname; // Mendapatkan domain saat ini
+
+    // console.log(selectedYear)
+    if (currentDomain === "zis-alhasanah.com" && selectedYear=="2024") {
+        window.location.href = `https://${selectedYear}.zis-alhasanah.com/`;
+    }else if(currentDomain === "2024.zis-alhasanah.com" && selectedYear !="2024") {
+        window.location.href = `https://zis-alhasanah.com/landing-pages/index?year=${selectedYear}`;
+    }
+});
 </script>
 
 
