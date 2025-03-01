@@ -105,9 +105,13 @@
         <div class="row">
             <div class="form-group col-md-4">
                 <select name="year" id="year" class="form-control">
-                    <option value="2024" {{ request('year') == '2024' ? 'selected' : '' }}>Pilih Tahun</option> 
-                    <option value="2024" {{ request('year') == '2024' ? 'selected' : '' }}>2024</option>
-                    <option value="2025" {{ request('year') == '2025' ? 'selected' : '' }}>2025</option>
+                    @php
+                        $currentYear = now()->year;
+                        $selectedYear = request('year', $currentYear); 
+                    @endphp
+                    <option value="{{$currentYear}}" {{ $selectedYear == '2024' ? 'selected' : '' }}>-Pilih Tahun-</option> 
+                    <option value="2024" {{ $selectedYear == '2024' ? 'selected' : '' }}>2024</option>
+                    <option value="2025" {{ $selectedYear == '2025' ? 'selected' : '' }}>2025</option>
                 </select> 
             </div>
             <div class="form-group col-md-3">
