@@ -109,7 +109,7 @@
                         $currentYear = now()->year;
                         $selectedYear = request('year', $currentYear); 
                     @endphp
-                    <option value="{{$currentYear}}" {{ $selectedYear == '2024' ? 'selected' : '' }}>-Pilih Tahun-</option> 
+                    <option value="{{$currentYear}}" {{ $selectedYear == '' ? 'selected' : '' }}>-Pilih Tahun-</option> 
                     <option value="2024" {{ $selectedYear == '2024' ? 'selected' : '' }}>2024</option>
                     <option value="2025" {{ $selectedYear == '2025' ? 'selected' : '' }}>2025</option>
                 </select> 
