@@ -36,8 +36,9 @@ class MuzakkiDataTable extends DataTable
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query(Request $request)
-    {        $year = $request->input('year', date('Y'));
-         $model = Muzakkiview::query()->whereYear('created_at', $year);
+    {    
+        $year = $request->input('year', date('Y'));
+        $model = Muzakkiview::query()->whereYear('created_at', $year);
 
         return $this->applyScopes($model);
     }

@@ -11,7 +11,7 @@
 </span> Edit
 </a> 
 
-->
+-> 
     <a class="btn btn-sm btn-icon btn-info" data-bs-toggle="tooltip" title="print invoice" href="{{ route('invoice',$code)}}">
         <span class="btn-inner">
             <svg width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

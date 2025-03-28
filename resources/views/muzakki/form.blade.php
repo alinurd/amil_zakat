@@ -10,7 +10,7 @@
       @endif
 
       <div class="card">
-         <div class="card-header d-flex justify-content-between">
+         <div class="card-header d-flex justify-content-between"> 
             <div class="header-title">
                <h4 class="card-title">{{$id !== null ? 'Update' : 'New' }} Muzakki</h4> 
             </div>

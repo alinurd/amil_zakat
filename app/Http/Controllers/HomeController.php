@@ -24,7 +24,7 @@ class HomeController extends Controller
         $Transactionsmustahik = Mustahik::where('status', '2')->count();
 
         // Menghitung total transaksi muzakki (Uang dan Transfer) berdasarkan jumlah_bayar * jumlah_jiwa
-        $totalTransactionsmuzakki = Muzakki::whereIn('type', ['Uang', 'Transfer'])
+        $totalTransactionsmuzakki = Muzakki::where('satuan', 'Rupiah') 
             ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
             ->value('total');
 
@@ -90,6 +90,7 @@ class HomeController extends Controller
             return $query->whereBetween('created_at', [$tanggalMulai, $tanggalSelesai]);
         })
         ->where('kategori_id', 1)
+        ->where('satuan', 'Rupiah')
         ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
         ->value('total');
 
@@ -98,6 +99,7 @@ class HomeController extends Controller
             return $query->whereBetween('created_at', [$tanggalMulai, $tanggalSelesai]);
         })
         ->where('kategori_id', 2)
+        ->where('satuan', 'Rupiah')
         ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
         ->value('total');
 
@@ -106,6 +108,7 @@ class HomeController extends Controller
             return $query->whereBetween('created_at', [$tanggalMulai, $tanggalSelesai]);
         })
         ->where('kategori_id', 3)
+        ->where('satuan', 'Rupiah')
         ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
         ->value('total');
 
@@ -114,18 +117,19 @@ class HomeController extends Controller
             return $query->whereBetween('created_at', [$tanggalMulai, $tanggalSelesai]);
         })
         ->where('kategori_id', 4)
+        ->where('satuan', 'Rupiah')
         ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
         ->value('total');
 
         // Menghitung total beras masuk untuk kategori Fitrah (dalam kilogram dan liter)
-        $totalBerasMuzakkiKgFitrahByUser = $queryMuzakki->clone()
+        $totalBerasMuzakkiKgFitrahByUser = Muzakki::where('created_by', $userId)
         ->where('kategori_id', 1)
         ->where('type', 'Beras')
         ->where('satuan', 'Kg')
         ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
         ->value('total');
 
-        $totalBerasMuzakkiLFitrahByUser = $queryMuzakki->clone()  
+        $totalBerasMuzakkiLFitrahByUser = Muzakki::where('created_by', $userId)
         ->where('kategori_id', 1)
         ->where('type', 'Beras')
         ->where('satuan', 'Liter')
@@ -133,14 +137,14 @@ class HomeController extends Controller
         ->value('total');
 
         // Menghitung total beras masuk untuk kategori Fidyah (dalam kilogram dan liter)
-        $totalBerasMuzakkiKgFidyahByUser = $queryMuzakki->clone()
+        $totalBerasMuzakkiKgFidyahByUser = Muzakki::where('created_by', $userId)
         ->where('kategori_id', 3)
         ->where('type', 'Beras')
         ->where('satuan', 'Kg')
         ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
         ->value('total');
-
-        $totalBerasMuzakkiLFidyahByUser = $queryMuzakki->clone()
+ 
+        $totalBerasMuzakkiLFidyahByUser = Muzakki::where('created_by', $userId)
         ->where('kategori_id', 3)
         ->where('type', 'Beras')
         ->where('satuan', 'Liter')
@@ -380,9 +384,10 @@ class HomeController extends Controller
         $Transactionsmuzakki = Muzakki::whereYear('created_at', $year)->count();
         $Transactionsmustahik = Mustahik::whereYear('created_at', $year)->where('status', '2')->count();
 
-        // Hitung total pemasukan untuk setiap kategori berdasarkan tahun 
+        // Hitung total pemasukan untuk setiap kategori berdasarkan tahun dan satuan 'Rupiah'
         $totalPemasukanFitrah = Muzakki::where('kategori_id', 1)
             ->whereYear('created_at', $year)
+            ->where('satuan', 'Rupiah') 
             ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
             ->value('total');
 
@@ -393,6 +398,7 @@ class HomeController extends Controller
 
         $totalPemasukanMaal = Muzakki::where('kategori_id', 2)
             ->whereYear('created_at', $year)
+            ->where('satuan', 'Rupiah') 
             ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
             ->value('total');
 
@@ -403,6 +409,7 @@ class HomeController extends Controller
 
         $totalPemasukanFidyah = Muzakki::where('kategori_id', 3)
             ->whereYear('created_at', $year)
+            ->where('satuan', 'Rupiah') 
             ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
             ->value('total');
 
@@ -413,6 +420,7 @@ class HomeController extends Controller
 
         $totalPemasukanInfaq = Muzakki::where('kategori_id', 4)
             ->whereYear('created_at', $year)
+            ->where('satuan', 'Rupiah') 
             ->selectRaw('SUM(jumlah_bayar * jumlah_jiwa) as total')
             ->value('total');
 

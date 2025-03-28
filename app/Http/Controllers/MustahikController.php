@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Http\Controllers;
 
@@ -145,11 +145,11 @@ class MustahikController extends Controller
         // Save the mustahik
         $mustahik->save();
         $history = new TransHistory();
-    $history->muzakki_id = $mustahik->id;
-    $history->user =Auth::user()->nama_lengkap;
-    $history->code =$mustahik->code ;
-    $history->method ="create";
-    $history->changes = json_encode([
+        $history->muzakki_id = $mustahik->id;
+        $history->user =Auth::user()->nama_lengkap;
+        $history->code =$mustahik->code ;
+        $history->method ="create";
+        $history->changes = json_encode([
         'code' => $mustahik->code,
         'nama_lengkap' =>$mustahik->nama_lengkap,
         'jenis_kelamin' => $mustahik->jenis_kelamin,

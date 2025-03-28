@@ -123,7 +123,7 @@
                                 <div class="progress-detail">
                                 <p class="mb-4 text-primary" style="font-size: 17px;">Fitrah</p>
                                  <h6 class="counter">Uang: Rp{{ number_format($totalPemasukanFitrahByUser, 0) }}.-</h6>
-                                 <h6 class="counter">Beras: {{ number_format($totalBerasMuzakkiLFitrahByUser, 0) }} Kg &amp; {{ number_format($totalBerasMuzakkiKgFitrahByUser, 1) }} Liter</h6>
+                                 <h6 class="counter">Beras: {{ number_format($totalBerasMuzakkiKgFitrahByUser, 1) }} Kg &amp; {{ number_format($totalBerasMuzakkiLFitrahByUser, 0) }} Liter</h6>
                                 </div>
                             </div>
                         </div>

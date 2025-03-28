@@ -25,7 +25,7 @@ class MuzakkiController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(MuzakkiDataTable $dataTable, Request $request)
-{
+    {
     $hideFilter='';
     if($request->input()){
         $hideFilter = '<a href="' . route('muzakki.index') . '" class="btn btn-warning btn-sm" style="margin-top: 5px;">
@@ -41,7 +41,6 @@ class MuzakkiController extends Controller
         ';
     }
     
-
     $filter = '<form action="' . route('muzakki.index') . '" method="GET" class="d-flex align-items-center" style="padding-right: 10px;">
             <div class="form-group mb-0 mr-2">
                 <select name="year" id="year" class="form-control">
@@ -65,7 +64,7 @@ class MuzakkiController extends Controller
     $headerAction = '<a href="' . route('muzakki.create') . '" class="btn btn-primary" role="button">Add Muzakki</a>';
 
     return $dataTable->render('global.datatable', compact('pageTitle', 'auth_user', 'assets', 'headerAction', 'filter', 'hideFilter'));
-}
+    }
 
 
     /**
